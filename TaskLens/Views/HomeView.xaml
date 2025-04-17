@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="TaskLens.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Height="Auto" Width="Auto">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🔹 상단 제목 -->
+        <TextBlock Text="홈 - 시스템 요약"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <!-- 🔹 콘텐츠 영역 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 🔸 CPU 박스 -->
+            <Border Background="#FF343A40" CornerRadius="10" Margin="10" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="CPU 사용률" FontSize="16" Foreground="White"/>
+                    <TextBlock Text="{Binding CpuUsage}" FontSize="28" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 🔸 RAM 박스 -->
+            <Border Background="#FF2D3142" CornerRadius="10" Margin="10" Padding="15" Grid.Column="1">
+                <StackPanel>
+                    <TextBlock Text="RAM 사용률" FontSize="16" Foreground="White"/>
+                    <TextBlock Text="{Binding RamUsage}" FontSize="28" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 🔸 경고 로그 개수 -->
+            <Border Background="#FF40475A" CornerRadius="10" Margin="10" Padding="15" Grid.Column="2">
+                <StackPanel>
+                    <TextBlock Text="최근 경고" FontSize="16" Foreground="White"/>
+                    <TextBlock Text="{Binding WarningCount}" FontSize="28" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
