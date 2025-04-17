@@ -1,12 +1,40 @@
 ﻿<UserControl x:Class="TaskLens.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TaskLens.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="설정"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" Width="300">
+
+            <CheckBox Content="시작 시 자동 실행"
+                      IsChecked="{Binding AutoStart, Mode=TwoWay}" 
+                      Margin="0,0,0,10"/>
+
+            <CheckBox Content="CPU 경고 알림 활성화"
+                      IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" 
+                      Margin="0,0,0,10"/>
+
+            <CheckBox Content="RAM 경고 알림 활성화"
+                      IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" 
+                      Margin="0,0,0,10"/>
+
+            <Button Content="저장"
+                    Command="{Binding SaveSettingsCommand}"
+                    Width="100"
+                    Margin="0,20,0,0"/>
+
+        </StackPanel>
     </Grid>
 </UserControl>
