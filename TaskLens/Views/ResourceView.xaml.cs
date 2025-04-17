@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskLens.ViewModels;
 
 namespace TaskLens.Views
 {
@@ -23,6 +24,8 @@ namespace TaskLens.Views
         public ResourceView ()
         {
             InitializeComponent();
+            this.DataContext = new ResourceViewModel();
+
         }
     }
 }
