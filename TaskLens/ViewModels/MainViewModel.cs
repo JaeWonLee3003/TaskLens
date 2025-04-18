@@ -30,6 +30,8 @@ namespace TaskLens.ViewModels
         public ICommand ShowAnalysisCommand { get; }
         public ICommand ShowWarningLogCommand { get; }
         public ICommand ShowSettingsCommand { get; }
+        public ICommand AnalyzeProcessCommand { get; }
+
 
         public MainViewModel()
         {
@@ -38,6 +40,7 @@ namespace TaskLens.ViewModels
             ResourceView = new ResourceView { DataContext = new ResourceViewModel() };
             WarningLogView = new WarningLogView { DataContext = new WarningLogViewModel() };
             SettingsView = new SettingsView { DataContext = new SettingsViewModel() };
+
 
             // 첫 화면
             CurrentView = HomeView;

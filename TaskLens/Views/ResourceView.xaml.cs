@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskLens.Core;
 using TaskLens.ViewModels;
 
 namespace TaskLens.Views
@@ -26,6 +27,18 @@ namespace TaskLens.Views
             InitializeComponent();
             this.DataContext = new ResourceViewModel();
 
+        }
+
+        private async void ProcessGrid_PreviewKeyDown (object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F2) // 원하는 키 지정
+            {
+                if (DataContext is ResourceViewModel vm && vm.SelectedProcess != null)
+                {
+                    var result = await OllamaClient.GetProcessExplanationAsync(vm.SelectedProcess.Name);
+                    vm.AiResultText = result;
+                }
+            }
         }
     }
 }

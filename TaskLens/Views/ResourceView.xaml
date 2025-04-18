@@ -9,6 +9,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="1.4*"/>
+            <RowDefinition Height="*"/>            
         </Grid.RowDefinitions>
 
         <TextBlock Text="리소스 사용량 분석"
@@ -26,5 +28,55 @@
                 <lvc:CartesianChart Series="{Binding RamSeries}" />
             </GroupBox>
         </StackPanel>
+
+        <DataGrid x:Name="ProcessGrid"
+              ItemsSource="{Binding TopProcessList}"
+              SelectedItem="{Binding SelectedProcess}"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              Margin="0,20,0,0"
+              HeadersVisibility="Column"
+              PreviewKeyDown="ProcessGrid_PreviewKeyDown"
+              GridLinesVisibility="None"
+              RowBackground="#2D2D30"
+              AlternatingRowBackground="#2A2A2A"
+              Background="#2D2D30"
+              Foreground="White"
+              BorderBrush="Transparent"
+              SelectionUnit="FullRow"
+                  Grid.Row="2">
+
+            <DataGrid.Resources>
+                <!-- 헤더 스타일 -->
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#1E1E1E"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="#444"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="프로세스" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="RAM (MB)" Binding="{Binding Ram}" Width="120" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!--
+        <Button Content="🔍 AI 설명 가져오기" Grid.Row="3"
+        Command="{Binding AnalyzeProcessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top"
+        Margin="0,10,0,0" Width="180" Height="30"/>
+        -->
+        <TextBlock Grid.Row="3" Text="프로세스를 클릭하고 [F2] 를 누르면 프로세스의 대해서 알 수 있습니다."
+                Margin="0 5 0 0"></TextBlock>
+        <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="2.5" Margin="0 25 0 0" >
+            <TextBlock Text="{Binding AiResultText}" FontSize="14" TextWrapping="Wrap"
+                       Background="#2D2D30" Foreground="White" Padding="5"/>
+        </Border>
+
+
+
+
     </Grid>
 </UserControl>
