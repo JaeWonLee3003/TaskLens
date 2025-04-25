@@ -101,6 +101,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\BaseViewModel.cs" />
     <Compile Include="Core\OllamaClient.cs" />
+    <Compile Include="Core\OllamaHelper.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Models\ProcessInfoModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

@@ -13,8 +13,8 @@ namespace TaskLens.Core
         {
             var request = new
             {
-                model = "llama3.2-vision:11b",
-                prompt = $"프로세스 이름: {processName}\n이 프로세스가 어떤 용도인지 간단히 설명해줘. 짧게, 1문장.",
+                model = "gemma3:12b",
+                prompt = $"프로세스 이름은 {processName}입니다. 어떤 프로세스 인가요? 짧게 알려주세요.",
                 stream = false
             };
 
@@ -32,5 +32,22 @@ namespace TaskLens.Core
 
             return output?.Trim();
         }
+
+        public static async Task PrimeModelStyleAsync ()
+        {
+            var request = new
+            {
+                model = "gemma3:latest",
+                system = "너는 보안 전문가 AI야. 설명은 최대 1문장, 쉬운 말로." +
+                " 당신이 알 수 없는 프로세스의 이름일 경우에는 [주의] 알 수 없는 프로세스. 라고 답해주세요.",
+                prompt = "앞으로 입력될 모든 프로세스 이름에 대해 짧고 정확한 설명을 제공할 준비를 하세요.",
+                stream = false
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("http://localhost:11434", content);
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }

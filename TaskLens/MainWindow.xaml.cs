@@ -15,6 +15,9 @@ using System.Windows.Shapes;
 using TaskLens.ViewModels;
 using System.Drawing;
 using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
+using System.Diagnostics;
+using TaskLens.Core;
 
 namespace TaskLens
 {
@@ -40,7 +43,33 @@ namespace TaskLens
 
             // 더블클릭 시 열기
             _notifyIcon.DoubleClick += (s, e) => ShowWindow();
+            Task.Run(() =>
+            {
+                if (!OllamaHelper.IsOllamaInstalled())
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        var result = MessageBox.Show("Ollama가 설치되어 있지 않습니다.\n\n설치하시겠습니까?",
+                            "Ollama 설치 필요",
+                            MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "https://ollama.com/download",
+                                UseShellExecute = true
+                            });
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ollama가 설치되어야 일부 기능을 사용할 수 있습니다.", "안내", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    });
+                }
+            });
         }
+
 
         private void ShowWindow ()
         {
