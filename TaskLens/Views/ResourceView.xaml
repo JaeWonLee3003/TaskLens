@@ -6,11 +6,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid Margin="20">
+        <Grid.Resources>
+            <Style TargetType="DataGridRow">
+                <Setter Property="Opacity" Value="0"/>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1" Duration="0:0:0.8"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="1.1*"/>
-            <RowDefinition Height="*"/>            
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="리소스 사용량 분석"
@@ -29,23 +45,13 @@
             </GroupBox>
         </StackPanel>
 
-        <DataGrid x:Name="ProcessGrid"
-              ItemsSource="{Binding TopProcessList}"
-              SelectedItem="{Binding SelectedProcess}"
-              AutoGenerateColumns="False"
-              IsReadOnly="True"
-              Margin="0,00,0,0"
-              HeadersVisibility="Column"
-              PreviewKeyDown="ProcessGrid_PreviewKeyDown"
-              GridLinesVisibility="None"
-              RowBackground="#2D2D30"
-              AlternatingRowBackground="#2A2A2A"
-              Background="#2D2D30"
-              Foreground="White"
-              BorderBrush="Transparent"
-              SelectionUnit="FullRow"
-                  Grid.Row="2">
-
+        
+        <DataGrid x:Name="ProcessGrid" ItemsSource="{Binding TopProcessList}"
+                  SelectedItem="{Binding SelectedProcess}" AutoGenerateColumns="False" 
+                  IsReadOnly="True" Margin="0,00,0,0" HeadersVisibility="Column" PreviewKeyDown="ProcessGrid_PreviewKeyDown"
+                  GridLinesVisibility="None" RowBackground="#2D2D30" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  AlternatingRowBackground="#2A2A2A" Background="#2D2D30" Foreground="White" BorderBrush="Transparent"
+                  SelectionUnit="FullRow" Grid.Row="2">
             <DataGrid.Resources>
                 <!-- 헤더 스타일 -->
                 <Style TargetType="DataGridColumnHeader">
@@ -56,14 +62,11 @@
                     <Setter Property="BorderBrush" Value="#444"/>
                 </Style>
             </DataGrid.Resources>
-
             <DataGrid.Columns>
                 <DataGridTextColumn Header="프로세스" Binding="{Binding Name}" Width="*" />
-                <DataGridTextColumn Header="CPU (%)" Binding="{Binding Cpu}" Width="100" />
-                <DataGridTextColumn Header="RAM (MB)" Binding="{Binding Ram}" Width="120" />
+                <DataGridTextColumn Header="RAM (MB)" Binding="{Binding Ram, StringFormat={}{0:F1}}" Width="120" />
             </DataGrid.Columns>
         </DataGrid>
-
         <!--
         <Button Content="🔍 AI 설명 가져오기" Grid.Row="3"
         Command="{Binding AnalyzeProcessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -75,9 +78,5 @@
             <TextBlock Text="{Binding AiResultText}" FontSize="14" TextWrapping="Wrap"
                        Background="#2D2D30" Foreground="White" Padding="5"/>
         </Border>
-
-
-
-
     </Grid>
 </UserControl>

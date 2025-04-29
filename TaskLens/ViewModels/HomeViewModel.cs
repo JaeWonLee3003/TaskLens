@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
+using TaskLens.Views;
 
 namespace TaskLens.ViewModels
 {

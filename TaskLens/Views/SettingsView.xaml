@@ -5,7 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
-    <Grid Margin="20">
+    <UserControl.Resources>
+        <Style x:Key="SettingsCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{DynamicResource BackgroundBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -14,21 +21,26 @@
         <TextBlock Text="설정"
                    FontSize="24"
                    FontWeight="Bold"
-                   Margin="0,0,0,20"/>
+                   Foreground="{DynamicResource TextBrush}"
+                   Margin="10,10,0,20"/>
 
-        <StackPanel Grid.Row="1" Orientation="Vertical" Width="300">
+        <StackPanel Grid.Row="1" Orientation="Vertical" Width="300" HorizontalAlignment="Left" Margin="10 0 0 0">
 
             <CheckBox Content="시작 시 자동 실행"
-                      IsChecked="{Binding AutoStart, Mode=TwoWay}" 
-                      Margin="0,0,0,10"/>
+                      Style="{DynamicResource SettingsCheckBoxStyle}"
+                      IsChecked="{Binding AutoStart, Mode=TwoWay}" />
 
             <CheckBox Content="CPU 경고 알림 활성화"
-                      IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" 
-                      Margin="0,0,0,10"/>
+                      Style="{DynamicResource SettingsCheckBoxStyle}"
+                      IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" />
 
             <CheckBox Content="RAM 경고 알림 활성화"
-                      IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" 
-                      Margin="0,0,0,10"/>
+                      Style="{DynamicResource SettingsCheckBoxStyle}"
+                      IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" />
+
+            <CheckBox Content="다크 테마 사용"
+                      Style="{DynamicResource SettingsCheckBoxStyle}"
+                      IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
 
             <Button Content="저장"
                     Command="{Binding SaveSettingsCommand}"

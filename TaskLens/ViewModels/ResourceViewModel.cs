@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -20,7 +21,6 @@ namespace TaskLens.ViewModels
         public SeriesCollection CpuSeries { get; set; }
         public SeriesCollection RamSeries { get; set; }
         public ObservableCollection<ProcessInfoModel> TopProcessList { get; set; } = new ObservableCollection<ProcessInfoModel>();
-
 
         private ChartValues<float> _cpuValues;
         private ChartValues<float> _ramValues;
@@ -85,53 +85,77 @@ namespace TaskLens.ViewModels
             _timer.Tick += UpdateData;
             _timer.Start();
 
-            _processUpdateTimer.Interval = TimeSpan.FromSeconds(5);
-            _processUpdateTimer.Tick += (s, e) => UpdateTopProcesses();
+            _processUpdateTimer.Interval = TimeSpan.FromSeconds(10);
+            _processUpdateTimer.Tick += async (s, e) => await UpdateTopProcessesAsync();
             _processUpdateTimer.Start();
 
             AnalyzeProcessCommand = new RelayCommand(async o =>
             {
                 if (SelectedProcess == null)
                 {
-                    System.Windows.MessageBox.Show(
-            "먼저 프로세스를 선택해주세요.",
-            "프로세스 미선택",
-            System.Windows.MessageBoxButton.OK,
-            System.Windows.MessageBoxImage.Warning
-        );
+                    MessageBox.Show(
+                        "먼저 프로세스를 선택해주세요.",
+                        "프로세스 미선택",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
                     return;
+                }
+
+                if (!App.Primed)
+                {
+                    await OllamaClient.PrimeModelStyleAsync();
+                    App.Primed = true;
                 }
 
                 var result = await OllamaClient.GetProcessExplanationAsync(SelectedProcess.Name);
                 SelectedProcess.AiDescription = result;
-
             });
-
         }
 
-        private void UpdateTopProcesses ()
+        private async Task UpdateTopProcessesAsync ()
         {
-            var processList = Process.GetProcesses()
-                .Select(p =>
-                {
-                    float ramMb = 0;
-                    try { ramMb = p.WorkingSet64 / 1024f / 1024f; } catch { }
+            await Task.Run(() =>
+            {
+                var processes = Process.GetProcesses();
 
-                    return new ProcessInfoModel
+                var filteredProcesses = processes
+                    .Where(p =>
                     {
-                        Name = p.ProcessName,
-                        Cpu = 0, // 추후 CPU 측정 붙일 수 있음
-                        Ram = ramMb,
-                        AiDescription = "분석 대기 중"
-                    };
-                })
-                .OrderByDescending(p => p.Ram)
-                .Take(10)
-                .ToList();
+                        try
+                        {
+                            return !p.HasExited &&
+                                   !string.IsNullOrEmpty(p.ProcessName) &&
+                                   !p.ProcessName.ToLower().Contains("system") &&
+                                   !p.ProcessName.ToLower().Contains("idle");
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    })
+                    .Select(p =>
+                    {
+                        float ramMb = 0;
+                        try { ramMb = p.WorkingSet64 / 1024f / 1024f; } catch { }
 
-            TopProcessList.Clear();
-            foreach (var p in processList)
-                TopProcessList.Add(p);
+                        return new ProcessInfoModel
+                        {
+                            Name = p.ProcessName,
+                            Ram = ramMb,
+                            AiDescription = "분석 대기 중"
+                        };
+                    })
+                    .OrderByDescending(p => p.Ram)
+                    .Take(10)
+                    .ToList();
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    TopProcessList.Clear();
+                    foreach (var p in filteredProcesses)
+                        TopProcessList.Add(p);
+                });
+            });
         }
 
         private void UpdateData (object sender, EventArgs e)
@@ -149,7 +173,18 @@ namespace TaskLens.ViewModels
 
             OnPropertyChanged(nameof(CpuSeries));
             OnPropertyChanged(nameof(RamSeries));
+
+            // RAM 경고 트리거
+            if (usedRamPercent >= 90)
+            {
+                if (Application.Current.MainWindow is MainWindow window && window.DataContext is MainViewModel vm)
+                {
+                    vm.AddWarning($"[RAM 경고] 사용률 {usedRamPercent:F1}% 초과");
+                }
+            }
         }
+
+
 
         private float GetTotalPhysicalMemoryInMB ()
         {
