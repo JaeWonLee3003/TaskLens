@@ -4,4 +4,8 @@
     <SolidColorBrush x:Key="CardBrush" Color="#3A3A3A" />
     <SolidColorBrush x:Key="TextBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="AccentBrush" Color="#0078D7" />
+    <SolidColorBrush x:Key="CpuCardBrush" Color="#3A3F4A"/>
+    <SolidColorBrush x:Key="RamCardBrush" Color="#2D3142"/>
+    <SolidColorBrush x:Key="WarningCardBrush" Color="#40475A"/>
+
 </ResourceDictionary>

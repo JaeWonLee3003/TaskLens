@@ -103,6 +103,8 @@
     <Compile Include="Core\OllamaClient.cs" />
     <Compile Include="Core\OllamaHelper.cs" />
     <Compile Include="Core\RelayCommand.cs" />
+    <Compile Include="Helpres\IconHelper.cs" />
+    <Compile Include="Helpres\UIHelpers.cs" />
     <Compile Include="Models\ProcessInfoModel.cs" />
     <Compile Include="Theme\ThemeManager.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

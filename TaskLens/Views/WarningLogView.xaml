@@ -4,22 +4,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid Margin="15" Background="#2D2D30">
+    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
         <StackPanel Margin="5">
             <TextBlock Text="경고 로그"
-                       FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
-            <ListBox ItemsSource="{Binding Warnings}" Background="#2D2D30" BorderBrush="Transparent">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="#3A3A3A" CornerRadius="8" Padding="10" Margin="0,5,0,5" BorderBrush="#555" BorderThickness="1">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="⚠️" FontSize="20" Margin="0,0,10,0"/>
-                                <TextBlock Text="{Binding}" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                       FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="10,10,0,20"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+              Background="{DynamicResource BackgroundBrush}">
+                <ItemsControl ItemsSource="{Binding Warnings}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource CardBrush}"
+                        CornerRadius="8"
+                        Padding="10"
+                        Margin="0,5,0,5"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚠️" FontSize="20" Margin="0,0,10,0" Foreground="{DynamicResource TextBrush}"/>
+                                    <TextBlock Text="{Binding}" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
         </StackPanel>
     </Grid>
 </UserControl>
