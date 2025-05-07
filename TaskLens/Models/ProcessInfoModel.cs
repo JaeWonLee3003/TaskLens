@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace TaskLens.Models
 {
@@ -12,6 +13,8 @@ namespace TaskLens.Models
         public float Cpu { get; set; }
         public float Ram { get; set; }
         public string AiDescription { get; set; } // ← Ollama 설명 결과 저장
+
+         public ImageSource Icon { get; set; } 
     }
 
 

@@ -16,6 +16,7 @@
         <TextBlock Text="홈 - 시스템 요약"
                    FontSize="24"
                    FontWeight="Bold"
+                   Foreground="{DynamicResource TextBrush}"
                    Margin="0,0,0,20"/>
 
         <!-- 🔹 콘텐츠 영역 -->
@@ -27,31 +28,33 @@
             </Grid.ColumnDefinitions>
 
             <!-- 🔸 CPU 박스 -->
-            <Border Background="#FF343A40" CornerRadius="10" Margin="10" Padding="15">
+            <!-- 🔸 CPU 박스 -->
+            <Border Background="{DynamicResource CpuCardBrush}" CornerRadius="10" Margin="10" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="CPU 사용률" FontSize="16" Foreground="White"/>
-                    <TextBlock Text="{Binding CpuUsage}" FontSize="28" FontWeight="Bold" Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="CPU 사용률" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{Binding CpuUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
+                   HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
             <!-- 🔸 RAM 박스 -->
-            <Border Background="#FF2D3142" CornerRadius="10" Margin="10" Padding="15" Grid.Column="1">
+            <Border Background="{DynamicResource RamCardBrush}" CornerRadius="10" Margin="10" Padding="15" Grid.Column="1">
                 <StackPanel>
-                    <TextBlock Text="RAM 사용률" FontSize="16" Foreground="White"/>
-                    <TextBlock Text="{Binding RamUsage}" FontSize="28" FontWeight="Bold" Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="RAM 사용률" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{Binding RamUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
+                   HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
             <!-- 🔸 경고 로그 개수 -->
-            <Border Background="#FF40475A" CornerRadius="10" Margin="10" Padding="15" Grid.Column="2">
+            <Border Background="{DynamicResource WarningCardBrush}" CornerRadius="10" Margin="10" Padding="15" Grid.Column="2">
                 <StackPanel>
-                    <TextBlock Text="최근 경고" FontSize="16" Foreground="White"/>
-                    <TextBlock Text="{Binding WarningCount}" FontSize="28" FontWeight="Bold" Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="최근 경고" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{Binding WarningCount}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
+                   HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
+
         </Grid>
     </Grid>
 </UserControl>
