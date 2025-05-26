@@ -30,6 +30,16 @@ namespace TaskLens
             InitializeComponent();
             DataContext = new MainViewModel();
 
+            this.Loaded += MainWindow_Loaded;
+            
+
+            
+        }
+
+        private void MainWindow_Loaded (object sender, RoutedEventArgs e)
+        {
+            VersionTextBlock.Text = $"Version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+
             // 트레이 아이콘 생성
             _notifyIcon = new NotifyIcon();
             _notifyIcon.Icon = new Icon("app.ico");  // ← 파일 없으면 에러
@@ -38,11 +48,11 @@ namespace TaskLens
 
             // 우클릭 메뉴
             _notifyIcon.ContextMenuStrip = new ContextMenuStrip();
-            _notifyIcon.ContextMenuStrip.Items.Add("열기", null, (s, e) => ShowWindow());
-            _notifyIcon.ContextMenuStrip.Items.Add("종료", null, (s, e) => CloseApp());
+            _notifyIcon.ContextMenuStrip.Items.Add("Open", null, (s, ee) => ShowWindow());
+            _notifyIcon.ContextMenuStrip.Items.Add("Close", null, (s, ee) => CloseApp());
 
             // 더블클릭 시 열기
-            _notifyIcon.DoubleClick += (s, e) => ShowWindow();
+            _notifyIcon.DoubleClick += (s, ee) => ShowWindow();
             Task.Run(() =>
             {
                 if (!OllamaHelper.IsOllamaInstalled())
@@ -69,7 +79,6 @@ namespace TaskLens
                 }
             });
         }
-
 
         private void ShowWindow ()
         {

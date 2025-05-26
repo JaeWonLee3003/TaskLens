@@ -40,18 +40,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="리소스 사용량 분석"
-                   FontSize="24" FontWeight="Bold"
+        <TextBlock Text="{DynamicResource Resource_Usage_Analysis}"
+                   FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
                    Margin="0,0,0,20"/>
 
         <UniformGrid Rows="2" Grid.Row="1" Margin="0 0 0 20">
             <!-- CPU 차트 -->
-            <GroupBox Header="CPU 사용률 (%)" Margin="0 0 0 20">
+            <GroupBox Header="{DynamicResource Cpu_Usage}" Margin="0 0 0 20">
                 <lvc:CartesianChart Series="{Binding CpuSeries}" />
             </GroupBox>
 
             <!-- RAM 차트 -->
-            <GroupBox Header="RAM 사용률 (%)">
+            <GroupBox Header="{DynamicResource Ram_Usage}">
                 <lvc:CartesianChart Series="{Binding RamSeries}" />
             </GroupBox>
         </UniformGrid>
@@ -75,7 +75,7 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="프로세스" Width="*">
+                <DataGridTemplateColumn Header="{DynamicResource Process_Title}" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -89,7 +89,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="3" Text="프로세스를 클릭하고 [F2] 키를 입력하면 프로세스 정보의 대해서 알 수 있습니다."
+        <TextBlock Grid.Row="3" Text="{DynamicResource Process_Info_Tip}"
                    Margin="0 5 0 0" TextWrapping="Wrap"></TextBlock>
         <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="2.5" Margin="0 25 0 0" >
             <TextBlock Text="{Binding AiResultText}" FontSize="14" TextWrapping="Wrap"

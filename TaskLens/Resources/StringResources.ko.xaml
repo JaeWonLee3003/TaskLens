@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+
+  <sys:String x:Key="Home_Title">홈</sys:String>
+  <sys:String x:Key="Home_Title2">홈 - 시스템 요약</sys:String>
+  <sys:String x:Key="Resource_Analysis_Title">리소스 분석</sys:String>
+  <sys:String x:Key="WarningLog_Title">경고 로그</sys:String>
+
+  <sys:String x:Key="Cpu_Usage_Title">CPU 사용률</sys:String>
+  <sys:String x:Key="Ram_Usage_Title">RAM 사용률</sys:String>
+  <sys:String x:Key="Recent_Warnings_Title">최근 경고</sys:String>
+  <sys:String x:Key="Warning_Count">N 건</sys:String>
+
+  <sys:String x:Key="Resource_Usage_Analysis">리소스 사용량 분석</sys:String>
+
+  <sys:String x:Key="Process_Title">프로세스</sys:String>
+
+  <sys:String x:Key="Process_Info_Tip">프로세스를 클릭하고 [F2] 키를 입력하면 프로세스 정보의 대해서 알 수 있습니다.</sys:String>
+
+  <sys:String x:Key="Warning_Log_Title">경고 로그</sys:String>
+  
+  <!-- 공통 UI 텍스트 -->
+  <sys:String x:Key="Settings_Title">설정</sys:String>
+  <sys:String x:Key="AutoStart_Label">시작 시 자동 실행</sys:String>
+  <sys:String x:Key="CpuWarning_Label">CPU 경고 알림 활성화</sys:String>
+  <sys:String x:Key="RamWarning_Label">RAM 경고 알림 활성화</sys:String>
+  <sys:String x:Key="Theme_Label">다크 테마 사용</sys:String>
+  <sys:String x:Key="Save_Button">💾 저장</sys:String>
+
+  <!-- 추가 사용 가능 키 -->
+  <sys:String x:Key="Cpu_Usage">CPU 사용률 (&#37;)</sys:String>
+  <sys:String x:Key="Ram_Usage">RAM 사용률 (%)</sys:String>
+  <sys:String x:Key="Recent_Warnings">최근 경고</sys:String>
+  <sys:String x:Key="Warning_Log">경고 로그</sys:String>
+  <sys:String x:Key="Analyze_Process">프로세스 분석</sys:String>
+  <sys:String x:Key="Open_File_Location">파일 위치 열기</sys:String>
+  <sys:String x:Key="Kill_Process">작업 끝내기</sys:String>
+
+</ResourceDictionary>

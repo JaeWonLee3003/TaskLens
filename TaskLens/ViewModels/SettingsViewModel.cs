@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TaskLens.Core;
 using TaskLens.Theme;
@@ -57,6 +61,51 @@ namespace TaskLens.ViewModels
 
             SaveSettingsCommand = new RelayCommand(o => SaveSettings());
         }
+
+        private CultureInfo _selectedLanguage; // 기본값: 한국어
+        public CultureInfo SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                if (_selectedLanguage != value)
+                {
+                    _selectedLanguage = value;
+                    OnPropertyChanged();
+
+                    // 언어 코드 변경 시 리소스 업데이트
+                    ApplyLanguage(value);
+                }
+            }
+        }
+
+        private void ApplyLanguage (CultureInfo langCode)
+        {
+            var dict = new ResourceDictionary();
+
+            switch (langCode.Name)
+            {
+                case "en":
+                    dict.Source = new Uri("Resources/StringResources.en.xaml", UriKind.Relative);
+                    break;
+                case "ko":
+                    dict.Source = new Uri("Resources/StringResources.ko.xaml", UriKind.Relative);
+                    break;
+            }
+
+            // 기존 리소스를 제거하고 새로운 리소스를 추가
+            var existingDict = Application.Current.Resources.MergedDictionaries
+                .FirstOrDefault(d => d.Source?.OriginalString.Contains("StringResources") == true);
+            if (existingDict != null)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(existingDict);
+            }
+
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+        }
+
+
+
 
         private void SaveSettings ()
         {

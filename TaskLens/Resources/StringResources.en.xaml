@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+
+  <sys:String x:Key="Home_Title">Home</sys:String>
+  <sys:String x:Key="Home_Title2">Home - System Overview</sys:String>
+  <sys:String x:Key="Resource_Analysis_Title">Resource Analysis</sys:String>
+  <sys:String x:Key="WarningLog_Title">Warning Log</sys:String>
+
+  <sys:String x:Key="Cpu_Usage_Title">CPU Usage</sys:String>
+  <sys:String x:Key="Ram_Usage_Title">RAM Usage</sys:String>
+  <sys:String x:Key="Recent_Warnings_Title">Recent Warnings</sys:String>
+  <sys:String x:Key="Warning_Count">N items</sys:String>
+
+  <sys:String x:Key="Resource_Usage_Analysis">Resource Usage Analysis</sys:String>
+
+  <sys:String x:Key="Process_Title">Process</sys:String>
+
+  <sys:String x:Key="Process_Info_Tip">Click a process and press [F2] to get more information about it.</sys:String>
+
+  <sys:String x:Key="Warning_Log_Title">Warning Log</sys:String>
+  
+  <!-- 공통 UI 텍스트 -->
+  <sys:String x:Key="Settings_Title">Settings</sys:String>
+  <sys:String x:Key="AutoStart_Label">Launch on Startup</sys:String>
+  <sys:String x:Key="CpuWarning_Label">Enable CPU Alerts</sys:String>
+  <sys:String x:Key="RamWarning_Label">Enable RAM Alerts</sys:String>
+  <sys:String x:Key="Theme_Label">Use Dark Theme</sys:String>
+  <sys:String x:Key="Save_Button">💾 Save Settings</sys:String>
+
+  <!-- 추가 사용 가능 키 -->
+  <sys:String x:Key="Cpu_Usage">CPU Usage</sys:String>
+  <sys:String x:Key="Ram_Usage">RAM Usage</sys:String>
+  <sys:String x:Key="Recent_Warnings">Recent Warnings</sys:String>
+  <sys:String x:Key="Warning_Log">Warning Log</sys:String>
+  <sys:String x:Key="Analyze_Process">Analyze Process</sys:String>
+  <sys:String x:Key="Open_File_Location">Open File Location</sys:String>
+  <sys:String x:Key="Kill_Process">End Task</sys:String>
+
+</ResourceDictionary>

@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <!-- 🔹 상단 제목 -->
-        <TextBlock Text="홈 - 시스템 요약"
+        <TextBlock Text="{DynamicResource Home_Title2}"
                    FontSize="24"
                    FontWeight="Bold"
                    Foreground="{DynamicResource TextBrush}"
@@ -31,7 +31,7 @@
             <!-- 🔸 CPU 박스 -->
             <Border Background="{DynamicResource CpuCardBrush}" CornerRadius="10" Margin="10" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="CPU 사용률" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{DynamicResource Cpu_Usage_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
                     <TextBlock Text="{Binding CpuUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
                    HorizontalAlignment="Center"/>
                 </StackPanel>
@@ -40,7 +40,7 @@
             <!-- 🔸 RAM 박스 -->
             <Border Background="{DynamicResource RamCardBrush}" CornerRadius="10" Margin="10" Padding="15" Grid.Column="1">
                 <StackPanel>
-                    <TextBlock Text="RAM 사용률" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{DynamicResource Ram_Usage_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
                     <TextBlock Text="{Binding RamUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
                    HorizontalAlignment="Center"/>
                 </StackPanel>
@@ -49,7 +49,7 @@
             <!-- 🔸 경고 로그 개수 -->
             <Border Background="{DynamicResource WarningCardBrush}" CornerRadius="10" Margin="10" Padding="15" Grid.Column="2">
                 <StackPanel>
-                    <TextBlock Text="최근 경고" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="{DynamicResource Recent_Warnings_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}"/>
                     <TextBlock Text="{Binding WarningCount}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
                    HorizontalAlignment="Center"/>
                 </StackPanel>

@@ -50,10 +50,11 @@
             <TextBlock Text="TaskLens" Foreground="White" FontSize="20" 
                        Margin="10" FontWeight="Bold"/>
 
-            <Button Content="홈" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowHomeCommand}" />
-            <Button Content="리소스 분석" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowAnalysisCommand}" />
-            <Button Content="경고 로그" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowWarningLogCommand}" />
-            <Button Content="설정" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowSettingsCommand}"/>
+            <Button Content="{DynamicResource Home_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowHomeCommand}" />
+            <Button Content="{DynamicResource Resource_Analysis_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowAnalysisCommand}" />
+            <Button Content="{DynamicResource WarningLog_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowWarningLogCommand}" />
+            <Button Content="{DynamicResource Settings_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowSettingsCommand}"/>
+            <TextBlock x:Name="VersionTextBlock" Text="Version" Foreground="LightGray" Margin="10 0 0 0"/>
         </StackPanel>
 
         <!-- 📌 우측 콘텐츠 영역 -->

@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="설정"
+        <TextBlock Text="{DynamicResource Settings_Title}"
                    FontSize="24"
                    FontWeight="Bold"
                    Foreground="{DynamicResource TextBrush}"
@@ -26,23 +26,29 @@
 
         <StackPanel Grid.Row="1" Orientation="Vertical" Width="300" HorizontalAlignment="Left" Margin="10 0 0 0">
 
-            <CheckBox Content="시작 시 자동 실행"
+            <CheckBox Content="{DynamicResource AutoStart_Label}"
                       Style="{DynamicResource SettingsCheckBoxStyle}"
                       IsChecked="{Binding AutoStart, Mode=TwoWay}" />
 
-            <CheckBox Content="CPU 경고 알림 활성화"
+            <CheckBox Content="{DynamicResource CpuWarning_Label}"
                       Style="{DynamicResource SettingsCheckBoxStyle}"
                       IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" />
 
-            <CheckBox Content="RAM 경고 알림 활성화"
+            <CheckBox Content="{DynamicResource RamWarning_Label}"
                       Style="{DynamicResource SettingsCheckBoxStyle}"
                       IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" />
 
-            <CheckBox Content="다크 테마 사용"
+            <CheckBox Content="{DynamicResource Theme_Label}"
                       Style="{DynamicResource SettingsCheckBoxStyle}"
                       IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
 
-            <Button Content="저장"
+            <!-- 언어 선택 ComboBox 추가 -->
+            <ComboBox x:Name="LanguageComboBox" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                      DisplayMemberPath="DisplayName"
+                      Margin="0,20,0,0">
+            </ComboBox>
+
+            <Button Content="{DynamicResource Save_Button}"
                     Command="{Binding SaveSettingsCommand}"
                     Width="100"
                     Margin="0,20,0,0"/>

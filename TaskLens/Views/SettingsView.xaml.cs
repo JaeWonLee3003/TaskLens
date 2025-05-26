@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace TaskLens.Views
         public SettingsView ()
         {
             InitializeComponent();
+            this.Loaded += SettingsView_Loaded;
+        }
+
+        private void SettingsView_Loaded (object sender, RoutedEventArgs e)
+        {
+            LanguageComboBox.ItemsSource = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("ko") };
         }
     }
 }

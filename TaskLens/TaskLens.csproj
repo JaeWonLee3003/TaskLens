@@ -104,6 +104,7 @@
     <Compile Include="Core\OllamaHelper.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Helpres\IconHelper.cs" />
+    <Compile Include="Helpres\LocalizationManager.cs" />
     <Compile Include="Helpres\UIHelpers.cs" />
     <Compile Include="Models\ProcessInfoModel.cs" />
     <Compile Include="Theme\ThemeManager.cs" />
@@ -184,6 +185,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Page Include="Resources\StringResources.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\StringResources.ko.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
