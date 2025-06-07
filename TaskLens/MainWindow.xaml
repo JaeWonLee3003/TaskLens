@@ -37,6 +37,35 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="MenuRadioButtonStyle" TargetType="RadioButton">
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Margin" Value="5,2"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="15,0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                <ContentPresenter VerticalAlignment="Center" Margin="10,0"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -46,14 +75,15 @@
         </Grid.ColumnDefinitions>
 
         <!-- 📌 좌측 사이드 메뉴 -->
-        <StackPanel Grid.Column="0" Background="#2D2D30">
+        <StackPanel Grid.Column="0" Background="{DynamicResource WarningCardBrush}">
             <TextBlock Text="TaskLens" Foreground="White" FontSize="20" 
                        Margin="10" FontWeight="Bold"/>
 
-            <Button Content="{DynamicResource Home_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowHomeCommand}" />
-            <Button Content="{DynamicResource Resource_Analysis_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowAnalysisCommand}" />
-            <Button Content="{DynamicResource WarningLog_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowWarningLogCommand}" />
-            <Button Content="{DynamicResource Settings_Title}" Style="{StaticResource MenuButtonStyle}" Command="{Binding ShowSettingsCommand}"/>
+            <RadioButton Content="{DynamicResource Home_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsHomeSelected}" Command="{Binding ShowHomeCommand}" />
+            <RadioButton Content="{DynamicResource Resource_Analysis_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsAnalysisSelected}" Command="{Binding ShowAnalysisCommand}" />
+            <RadioButton Content="{DynamicResource WarningLog_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsWarningLogSelected}" Command="{Binding ShowWarningLogCommand}" />
+            <RadioButton Content="{DynamicResource Settings_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsSettingsSelected}" Command="{Binding ShowSettingsCommand}" />
+
             <TextBlock x:Name="VersionTextBlock" Text="Version" Foreground="LightGray" Margin="10 0 0 0"/>
         </StackPanel>
 

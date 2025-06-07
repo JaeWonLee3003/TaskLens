@@ -158,25 +158,37 @@ namespace TaskLens.ViewModels
                     {
                         float ramMb = 0;
                         string exePath = "";
-                        //ImageSource icon = null;
+                        ImageSource icon = null;
 
                         try
                         {
                             ramMb = p.WorkingSet64 / 1024f / 1024f;
-                            //exePath = IconHelper.GetProcessPathSafe(p.ProcessName);
-                            //if (!string.IsNullOrEmpty(exePath))
-                            //{
-                            //    // 아이콘 로딩도 백그라운드에서 시도
-                            //    icon = IconHelper.GetProcessIcon(exePath  );
-                            //}
+                            exePath = IconHelper.GetProcessPathSafe(p.ProcessName);
+                            if (string.IsNullOrEmpty(exePath))
+                            {
+                                Debug.WriteLine($"[경고] {p.ProcessName}의 경로를 찾지 못함");
+                                icon = IconHelper.DefaultProcessIcon; // 기본 아이콘 사용
+                            }
+                            else
+                            {
+                                icon = IconHelper.GetProcessIcon(exePath);
+                                if (icon == null)
+                                {
+                                    Debug.WriteLine($"[경고] {exePath}에서 아이콘 추출 실패");
+                                    icon = IconHelper.DefaultProcessIcon; // 기본 아이콘 사용
+                                }
+                            }
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"[에러] {p.ProcessName}: {ex.Message}");
+                        }
 
                         return new ProcessInfoModel
-                        {
+                        {       
                             Name = p.ProcessName,
                             Ram = ramMb,
-                            //Icon = icon,
+                            Icon = icon,
                             AiDescription = "분석 대기 중"
                         };
                     })

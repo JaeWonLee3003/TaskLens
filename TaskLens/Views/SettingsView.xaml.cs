@@ -27,9 +27,19 @@ namespace TaskLens.Views
             this.Loaded += SettingsView_Loaded;
         }
 
+        private bool Isfirst = false;
+
         private void SettingsView_Loaded (object sender, RoutedEventArgs e)
         {
-            LanguageComboBox.ItemsSource = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("ko") };
+            var cultures = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("ko") };
+            LanguageComboBox.ItemsSource = cultures;
+
+            // 현재 UI 언어 가져오기
+            var currentCulture = System.Globalization.CultureInfo.CurrentUICulture;
+
+            // 현재 언어가 목록에 있으면 선택, 없으면 첫 번째 항목 선택
+            var selected = cultures.FirstOrDefault(c => c.TwoLetterISOLanguageName == currentCulture.TwoLetterISOLanguageName);
+            LanguageComboBox.SelectedItem = selected ?? cultures[0];
         }
     }
 }

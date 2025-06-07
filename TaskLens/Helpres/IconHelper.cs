@@ -9,6 +9,23 @@ namespace TaskLens.Helpers
 {
     public static class IconHelper
     {
+        public static ImageSource DefaultProcessIcon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/DefaultProcess.png"));
+
+        static IconHelper()
+        {
+            try
+            {
+                // 리소스 경로가 실제로 존재하는지 확인!
+                DefaultProcessIcon = new BitmapImage(new Uri("pack://application:,,,/Resources/DefaultProcess.png"));
+            }
+            catch (Exception ex)
+            {
+                // 예외 발생 시 null로 처리 (또는 다른 안전한 기본값)
+                DefaultProcessIcon = null;
+                System.Diagnostics.Debug.WriteLine($"[IconHelper] 기본 아이콘 로딩 실패: {ex.Message}");
+            }
+        }
+
         public static string GetProcessPathSafe (string processName)
         {
             try
