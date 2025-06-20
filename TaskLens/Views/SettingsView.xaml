@@ -8,7 +8,27 @@
     <UserControl.Resources>
         <Style x:Key="SettingsCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style x:Key="SettingsButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
@@ -24,35 +44,59 @@
                    Foreground="{DynamicResource TextBrush}"
                    Margin="10,10,0,20"/>
 
-        <StackPanel Grid.Row="1" Orientation="Vertical" Width="300" HorizontalAlignment="Left" Margin="10 0 0 0">
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBrush}"
+                CornerRadius="12"
+                Padding="30"
+                Margin="0"
+                Effect="{DynamicResource CardShadow}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MinHeight="500"> <!-- 세로 길이 조정 -->
+            <StackPanel Orientation="Vertical" Width="340" VerticalAlignment="Stretch" HorizontalAlignment="Left">  
 
-            <CheckBox Content="{DynamicResource AutoStart_Label}"
-                      Style="{DynamicResource SettingsCheckBoxStyle}"
-                      IsChecked="{Binding AutoStart, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🚀" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
+                    <CheckBox Content="{DynamicResource AutoStart_Label}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              IsChecked="{Binding AutoStart, Mode=TwoWay}" />
+                </StackPanel>
 
-            <CheckBox Content="{DynamicResource CpuWarning_Label}"
-                      Style="{DynamicResource SettingsCheckBoxStyle}"
-                      IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🖥️" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
+                    <CheckBox Content="{DynamicResource CpuWarning_Label}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" />
+                </StackPanel>
 
-            <CheckBox Content="{DynamicResource RamWarning_Label}"
-                      Style="{DynamicResource SettingsCheckBoxStyle}"
-                      IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="💾" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
+                    <CheckBox Content="{DynamicResource RamWarning_Label}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" />
+                </StackPanel>
 
-            <CheckBox Content="{DynamicResource Theme_Label}"
-                      Style="{DynamicResource SettingsCheckBoxStyle}"
-                      IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🌙" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
+                    <CheckBox Content="{DynamicResource Theme_Label}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+                </StackPanel>
 
-            <!-- 언어 선택 ComboBox 추가 -->
-            <ComboBox x:Name="LanguageComboBox" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
-                      DisplayMemberPath="DisplayName"
-                      Margin="0,20,0,0">
-            </ComboBox>
+                <Separator Margin="0,10,0,10"/>
 
-            <Button Content="{DynamicResource Save_Button}"
-                    Command="{Binding SaveSettingsCommand}"
-                    Width="100"
-                    Margin="0,20,0,0"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🌐" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
+                    <ComboBox x:Name="LanguageComboBox" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                              DisplayMemberPath="DisplayName"
+                              Width="180"
+                              Margin="0,0,0,0"/>
+                </StackPanel>
 
-        </StackPanel>
+                <Button Content="{DynamicResource Save_Button}"
+                        Command="{Binding SaveSettingsCommand}"
+                        Style="{StaticResource SettingsButtonStyle}"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
