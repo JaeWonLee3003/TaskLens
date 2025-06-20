@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -23,14 +24,22 @@ namespace TaskLens.Core
                 Encoding.UTF8,
                 "application/json");
 
-            var response = await _httpClient.PostAsync("http://localhost:11434/api/generate", content);
-            response.EnsureSuccessStatusCode();
+            string output = null;
 
-            var resultJson = await response.Content.ReadAsStringAsync();
-            var result = JsonDocument.Parse(resultJson);
-            var output = result.RootElement.GetProperty("response").GetString();
+            try
+            {
+                var response = await _httpClient.PostAsync("http://localhost:11434/api/generate", content);
+                response.EnsureSuccessStatusCode();
 
-            return output?.Trim();
+                var resultJson = await response.Content.ReadAsStringAsync();
+                var result = JsonDocument.Parse(resultJson);
+                output = result.RootElement.GetProperty("response").GetString();
+                return output?.Trim();
+            }
+            catch (Exception e)
+            {
+                return $"Error : {e}";
+            }
         }
 
         public static async Task PrimeModelStyleAsync ()

@@ -108,8 +108,15 @@ namespace TaskLens.ViewModels
                 }
                 else
                 {
-                    var result = await OllamaClient.GetProcessExplanationAsync(SelectedProcess.Name);
-                    SelectedProcess.AiDescription = result;
+                    try
+                    {
+                        var result = await OllamaClient.GetProcessExplanationAsync(SelectedProcess.Name);
+
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show($"Error : {e}");
+                    }
                 }
             });
         }
