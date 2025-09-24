@@ -54,7 +54,7 @@
         </ContextMenu>
     </UserControl.Resources>
     
-    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
+    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="300"/>
@@ -65,18 +65,18 @@
 
         <!-- 🌟 Hero Section -->
         <StackPanel Grid.Row="0" Margin="0,0,0,30">
-            <TextBlock Text="Resource Analytics" 
+            <TextBlock Text="Resource Analytics" Margin="20 20 20 0"
                        FontSize="32" 
                        FontWeight="Light" 
                        Foreground="{DynamicResource TextBrush}"/>
             <TextBlock Text="실시간 시스템 리소스 사용량 분석 및 모니터링" 
                        FontSize="16" 
                        Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="0,8,0,0"/>
+                       Margin="20 20 20 0"/>
         </StackPanel>
 
         <!-- 📊 Charts Section -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="10 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="20"/>
@@ -159,7 +159,7 @@
         </Grid>
 
         <!-- 🔥 Process Dashboard -->
-        <Border Grid.Row="3" Style="{StaticResource ModernCardStyle}" Padding="24">
+        <Border Grid.Row="3" Style="{StaticResource ModernCardStyle}" Padding="24" Margin="20 0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -287,7 +287,7 @@
         <Border Grid.Row="4" 
                 Style="{StaticResource ModernCardStyle}" 
                 Padding="24" 
-                Margin="0,20,0,0"
+                Margin="20"
                 MinHeight="120">
             <Grid>
                 <Grid.ColumnDefinitions>

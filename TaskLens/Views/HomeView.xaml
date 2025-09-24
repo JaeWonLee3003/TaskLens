@@ -57,7 +57,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
+    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -66,21 +66,21 @@
 
         <!-- 🌟 Hero Section -->
         <StackPanel Grid.Row="0" Margin="0,0,0,40">
-            <TextBlock Text="System Overview" 
+            <TextBlock Text="System Overview" Margin="20 20 20 0"
                        FontSize="32" 
                        FontWeight="Light" 
                        Foreground="{DynamicResource TextBrush}"
                        HorizontalAlignment="Left"/>
-            <TextBlock Text="실시간 시스템 리소스 모니터링" 
+            <TextBlock Text="실시간 시스템 리소스 모니터링"
                        FontSize="16" 
                        FontWeight="Normal" 
                        Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="0,8,0,0"
+                       Margin="20,28,20,0"
                        HorizontalAlignment="Left"/>
         </StackPanel>
 
         <!-- 📊 Stats Cards Grid -->
-        <Grid Grid.Row="2" Margin="0,20,0,0">
+        <Grid Grid.Row="2" Margin="40 100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="20"/>

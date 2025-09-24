@@ -44,7 +44,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
+    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>  
@@ -52,22 +52,22 @@
         </Grid.RowDefinitions>
 
         <!-- 🌟 Hero Section -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,40">
-            <TextBlock Text="Warning Timeline" 
+        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+            <TextBlock Text="Warning Timeline" Margin="20 20 20 0"
                        FontSize="32" 
                        FontWeight="Light" 
                        Foreground="{DynamicResource TextBrush}"/>
             <TextBlock Text="시스템 경고 및 알림 히스토리를 확인하세요" 
                        FontSize="16" 
                        Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="0,8,0,0"/>
+                       Margin="20 20 20 0"/>
         </StackPanel>
 
         <!-- 📊 Stats Bar -->
         <Border Grid.Row="1" 
                 Style="{StaticResource ModernCardStyle}" 
                 Padding="24" 
-                Margin="0,0,0,24">
+                Margin="20,0,20,24">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -115,7 +115,8 @@
         <ScrollViewer Grid.Row="2" 
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Disabled"
-                     Background="Transparent">
+                     Background="Transparent"
+                     Margin="20,0,20,20">
             <ItemsControl ItemsSource="{Binding Warnings}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
