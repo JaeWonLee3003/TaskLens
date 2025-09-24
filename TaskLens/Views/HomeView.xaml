@@ -6,51 +6,265 @@
              mc:Ignorable="d"
              Height="Auto" Width="Auto">
 
-    <Grid Margin="20">
+    <UserControl.Resources>
+        <!-- 🎨 Modern Card Animations -->
+        <Storyboard x:Key="CardHoverIn">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="1.05" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="1.05" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        
+        <Storyboard x:Key="CardHoverOut">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="1.0" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="1.0" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- ✨ Glassmorphism Card Style -->
+        <Style x:Key="StatCardStyle" TargetType="Border" BasedOn="{StaticResource GlassCardStyle}">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource CardHoverIn}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource CardHoverOut}"/>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 상단 제목 -->
-        <TextBlock Text="{DynamicResource Home_Title2}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="{DynamicResource TextBrush}"
-                   Margin="0,0,0,20"/>
+        <!-- 🌟 Hero Section -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,40">
+            <TextBlock Text="System Overview" 
+                       FontSize="32" 
+                       FontWeight="Light" 
+                       Foreground="{DynamicResource TextBrush}"
+                       HorizontalAlignment="Left"/>
+            <TextBlock Text="실시간 시스템 리소스 모니터링" 
+                       FontSize="16" 
+                       FontWeight="Normal" 
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,8,0,0"
+                       HorizontalAlignment="Left"/>
+        </StackPanel>
 
-        <!-- 콘텐츠 영역 -->
-        <UniformGrid Grid.Row="1" Columns="3" Margin="0,10,0,0">
-            <!-- CPU 박스 -->
-            <Border Background="{DynamicResource CpuCardBrush}" CornerRadius="12" Margin="10" Padding="20" 
-                    Effect="{DynamicResource CardShadow}">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="🖥️" FontSize="28" HorizontalAlignment="Center" Foreground="{DynamicResource TextBrush}"/>
-                    <TextBlock Text="{DynamicResource Cpu_Usage_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}" Margin="0,5,0,0"/>
-                    <TextBlock Text="{Binding CpuUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
+        <!-- 📊 Stats Cards Grid -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- RAM 박스 -->
-            <Border Background="{DynamicResource RamCardBrush}" CornerRadius="12" Margin="10" Padding="20"
-                    Effect="{DynamicResource CardShadow}">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="💾" FontSize="28" HorizontalAlignment="Center" Foreground="{DynamicResource TextBrush}"/>
-                    <TextBlock Text="{DynamicResource Ram_Usage_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}" Margin="0,5,0,0"/>
+            <!-- 💻 CPU Card -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource StatCardStyle}"
+                    Background="{DynamicResource CpuCardBrush}"
+                    Padding="32"
+                    MinHeight="180"
+                    Cursor="Hand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     
-                    <TextBlock Text="{Binding RamUsage}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-                </StackPanel>
+                    <!-- Icon & Title -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="12" 
+                                Width="48" 
+                                Height="48" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="�" 
+                                      FontSize="24" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="CPU Usage" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="White"/>
+                            <TextBlock Text="Processor" 
+                                      FontSize="12" 
+                                      Foreground="#CCFFFFFF"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <!-- Value -->
+                    <TextBlock Grid.Row="1" 
+                              Text="{Binding CpuUsage}" 
+                              FontSize="36" 
+                              FontWeight="Bold" 
+                              Foreground="White" 
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center"/>
+                    
+                    <!-- Trend Indicator -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="4" 
+                                Padding="8,4">
+                            <TextBlock Text="↗ Real-time" 
+                                      FontSize="11" 
+                                      Foreground="White"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <!-- 경고 로그 개수 -->
-            <Border Background="{DynamicResource WarningCardBrush}" CornerRadius="12" Margin="10" Padding="20"
-                    Effect="{DynamicResource CardShadow}">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="⚠️" FontSize="28" HorizontalAlignment="Center" Foreground="{DynamicResource TextBrush}"/>
-                    <TextBlock Text="{DynamicResource Recent_Warnings_Title}" FontSize="16" Foreground="{DynamicResource TextBrush}" Margin="0,5,0,0"/>
-                    <TextBlock Text="{Binding WarningCount}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-                </StackPanel>
+            <!-- 🧠 RAM Card -->
+            <Border Grid.Column="2" 
+                    Style="{StaticResource StatCardStyle}"
+                    Background="{DynamicResource RamCardBrush}"
+                    Padding="32"
+                    MinHeight="180"
+                    Cursor="Hand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Icon & Title -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="12" 
+                                Width="48" 
+                                Height="48" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="🧠" 
+                                      FontSize="24" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Memory Usage" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="White"/>
+                            <TextBlock Text="RAM" 
+                                      FontSize="12" 
+                                      Foreground="#CCFFFFFF"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <!-- Value -->
+                    <TextBlock Grid.Row="1" 
+                              Text="{Binding RamUsage}" 
+                              FontSize="36" 
+                              FontWeight="Bold" 
+                              Foreground="White" 
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center"/>
+                    
+                    <!-- Trend Indicator -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="4" 
+                                Padding="8,4">
+                            <TextBlock Text="📈 Monitoring" 
+                                      FontSize="11" 
+                                      Foreground="White"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </Border>
-        </UniformGrid>
+
+            <!-- ⚠️ Warnings Card -->
+            <Border Grid.Column="4" 
+                    Style="{StaticResource StatCardStyle}"
+                    Background="{DynamicResource WarningCardBrush}"
+                    Padding="32"
+                    MinHeight="180"
+                    Cursor="Hand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Icon & Title -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="12" 
+                                Width="48" 
+                                Height="48" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="⚠️" 
+                                      FontSize="24" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="System Alerts" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="White"/>
+                            <TextBlock Text="Warnings" 
+                                      FontSize="12" 
+                                      Foreground="#CCFFFFFF"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <!-- Value -->
+                    <TextBlock Grid.Row="1" 
+                              Text="{Binding WarningCount}" 
+                              FontSize="36" 
+                              FontWeight="Bold" 
+                              Foreground="White" 
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center"/>
+                    
+                    <!-- Status Indicator -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Border Background="#33FFFFFF" 
+                                CornerRadius="4" 
+                                Padding="8,4">
+                            <TextBlock Text="🛡️ Protected" 
+                                      FontSize="11" 
+                                      Foreground="White"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

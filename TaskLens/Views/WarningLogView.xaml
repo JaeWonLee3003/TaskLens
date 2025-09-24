@@ -4,30 +4,222 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
-        <StackPanel Margin="5">
-            <TextBlock Text="경고 로그"
-                       FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="10,10,0,20"/>
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          Background="{DynamicResource BackgroundBrush}">
-                <ItemsControl ItemsSource="{Binding Warnings}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="{DynamicResource CardBrush}"
-                                    CornerRadius="10"
-                                    Padding="14"
-                                    Margin="0,8,0,8"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    BorderThickness="1">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="⚠️ " FontSize="16" Foreground="{DynamicResource TextBrush}" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding}" FontSize="16" Foreground="{DynamicResource TextBrush}" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+             
+    <UserControl.Resources>
+        <!-- 🎨 Warning Card Animation -->
+        <Storyboard x:Key="WarningCardFadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                           From="0" To="1" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                           From="20" To="0" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        
+        <!-- 🔥 Modern Warning Card Style -->
+        <Style x:Key="WarningCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Effect" Value="{DynamicResource CardShadow}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="0"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource WarningCardFadeIn}"/>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>  
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🌟 Hero Section -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,40">
+            <TextBlock Text="Warning Timeline" 
+                       FontSize="32" 
+                       FontWeight="Light" 
+                       Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="시스템 경고 및 알림 히스토리를 확인하세요" 
+                       FontSize="16" 
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,8,0,0"/>
         </StackPanel>
+
+        <!-- 📊 Stats Bar -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource ModernCardStyle}" 
+                Padding="24" 
+                Margin="0,0,0,24">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Border Background="{DynamicResource WarningCardBrush}" 
+                            CornerRadius="12" 
+                            Width="48" 
+                            Height="48" 
+                            Margin="0,0,16,0">
+                        <TextBlock Text="📋" 
+                                  FontSize="24" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="System Alerts" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextBrush}"/>
+                        <TextBlock Text="실시간 모니터링 결과" 
+                                  FontSize="13" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <Button Grid.Column="1" 
+                        Content="🗑️ Clear All" 
+                        Style="{StaticResource ModernButtonStyle}"
+                        Background="{DynamicResource WarningCardBrush}"
+                        Margin="0,0,12,0"
+                        Padding="16,8"/>
+                        
+                <Button Grid.Column="2" 
+                        Content="📥 Export" 
+                        Style="{StaticResource ModernButtonStyle}"
+                        Padding="16,8"/>
+            </Grid>
+        </Border>
+
+        <!-- ⚡ Timeline Container -->
+        <ScrollViewer Grid.Row="2" 
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Disabled"
+                     Background="Transparent">
+            <ItemsControl ItemsSource="{Binding Warnings}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource WarningCardStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Timeline Dot -->
+                                <Border Grid.Column="0" 
+                                       Background="{DynamicResource WarningCardBrush}" 
+                                       CornerRadius="20" 
+                                       Width="40" 
+                                       Height="40" 
+                                       Margin="0,0,20,0">
+                                    <TextBlock Text="⚠️" 
+                                              FontSize="20" 
+                                              HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                                </Border>
+                                
+                                <!-- Timeline Line (Vertical) -->
+                                <Rectangle Grid.Column="1" 
+                                          Width="2" 
+                                          Fill="{DynamicResource BorderBrush}" 
+                                          Margin="0,40,20,0"
+                                          VerticalAlignment="Stretch"/>
+                                
+                                <!-- Warning Content -->
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding}" 
+                                              FontSize="15" 
+                                              FontWeight="Medium"
+                                              TextWrapping="Wrap"
+                                              Foreground="{DynamicResource TextBrush}"
+                                              LineHeight="22"/>
+                                    <TextBlock Text="System Monitor • Just now" 
+                                              FontSize="12" 
+                                              Foreground="{DynamicResource TextSecondaryBrush}"
+                                              Margin="0,4,0,0"/>
+                                </StackPanel>
+                                
+                                <!-- Action Buttons -->
+                                <StackPanel Grid.Column="3" 
+                                           Orientation="Horizontal" 
+                                           VerticalAlignment="Center">
+                                    <Button Content="🔍" 
+                                           Background="Transparent"
+                                           BorderBrush="Transparent"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Padding="8"
+                                           Margin="4,0"
+                                           Cursor="Hand"
+                                           ToolTip="View Details"/>
+                                    <Button Content="❌" 
+                                           Background="Transparent"
+                                           BorderBrush="Transparent"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Padding="8"
+                                           Margin="4,0"
+                                           Cursor="Hand"
+                                           ToolTip="Dismiss"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- 📭 Empty State -->
+        <Border Grid.Row="2" 
+               Background="{DynamicResource GlassBrush}"
+               CornerRadius="20"
+               Padding="40"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="🎉" 
+                          FontSize="48" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,0,0,16"/>
+                <TextBlock Text="All Clear!" 
+                          FontSize="24" 
+                          FontWeight="SemiBold" 
+                          Foreground="{DynamicResource TextBrush}"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,8"/>
+                <TextBlock Text="현재 시스템에 경고사항이 없습니다" 
+                          FontSize="14" 
+                          Foreground="{DynamicResource TextSecondaryBrush}"
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

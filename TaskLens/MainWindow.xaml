@@ -7,59 +7,43 @@
 
     <Grid>
         <Grid.Resources>
-            <Style x:Key="MenuButtonStyle" TargetType="Button">
-                <Setter Property="Foreground" Value="White"/>
+            <!-- 🎨 Modern Navigation Style -->
+            <Style x:Key="ModernNavButtonStyle" TargetType="RadioButton">
+                <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Height" Value="40"/>
-                <Setter Property="Margin" Value="5,2"/>
-                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Height" Value="56"/>
+                <Setter Property="Margin" Value="8,4"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="Medium"/>
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                <Setter Property="Padding" Value="15,0"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" 
-                        CornerRadius="5">
-                                <ContentPresenter VerticalAlignment="Center" 
-                                      Margin="10,0"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#444"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="#666"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="MenuRadioButtonStyle" TargetType="RadioButton">
-                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Height" Value="40"/>
-                <Setter Property="Margin" Value="5,2"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                <Setter Property="Padding" Value="15,0"/>
+                <Setter Property="Padding" Value="20,0"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RadioButton">
-                            <Border Background="{TemplateBinding Background}" CornerRadius="5">
-                                <ContentPresenter VerticalAlignment="Center" Margin="10,0"/>
+                            <Border x:Name="Border" 
+                                   Background="{TemplateBinding Background}" 
+                                   CornerRadius="12"
+                                   BorderBrush="{TemplateBinding BorderBrush}"
+                                   BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                VerticalAlignment="Center" 
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                Margin="{TemplateBinding Padding}"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource GlassBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentSecondaryBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -74,18 +58,106 @@
             <!-- 메인 콘텐츠 -->
         </Grid.ColumnDefinitions>
 
-        <!-- 📌 좌측 사이드 메뉴 -->
-        <StackPanel Grid.Column="0" Background="{DynamicResource WarningCardBrush}">
-            <TextBlock Text="TaskLens" Foreground="White" FontSize="20" 
-                       Margin="10" FontWeight="Bold"/>
+        <!-- � Modern Sidebar Navigation -->
+        <Border Grid.Column="0" 
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <RadioButton Content="{DynamicResource Home_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsHomeSelected}" Command="{Binding ShowHomeCommand}" />
-            <RadioButton Content="{DynamicResource Resource_Analysis_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsAnalysisSelected}" Command="{Binding ShowAnalysisCommand}" />
-            <RadioButton Content="{DynamicResource WarningLog_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsWarningLogSelected}" Command="{Binding ShowWarningLogCommand}" />
-            <RadioButton Content="{DynamicResource Settings_Title}" Style="{StaticResource MenuRadioButtonStyle}" GroupName="MenuGroup" IsChecked="{Binding IsSettingsSelected}" Command="{Binding ShowSettingsCommand}" />
+                <!-- 🎯 App Header -->
+                <StackPanel Grid.Row="0" Margin="20,30,20,40">
+                    <Border Background="{DynamicResource AccentBrush}" 
+                            CornerRadius="16" 
+                            Width="64" 
+                            Height="64" 
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,16">
+                        <TextBlock Text="⚡" 
+                                  FontSize="32" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="TaskLens" 
+                              Foreground="{DynamicResource TextBrush}" 
+                              FontSize="24" 
+                              FontWeight="Bold"
+                              Margin="0,0,0,4"/>
+                    <TextBlock Text="System Monitor" 
+                              Foreground="{DynamicResource TextSecondaryBrush}" 
+                              FontSize="13"/>
+                </StackPanel>
 
-            <TextBlock x:Name="VersionTextBlock" Text="Version" Foreground="LightGray" Margin="10 0 0 0"/>
-        </StackPanel>
+                <!-- 🧭 Navigation Menu -->
+                <StackPanel Grid.Row="2" Margin="12,20,12,0">
+                    
+                    <RadioButton GroupName="MenuGroup" 
+                                IsChecked="{Binding IsHomeSelected, Mode=OneWay}" 
+                                Command="{Binding ShowHomeCommand}"
+                                Style="{StaticResource ModernNavButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏠" FontSize="18" Margin="0,0,12,0"/>
+                            <TextBlock Text="{DynamicResource Home_Title}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton GroupName="MenuGroup" 
+                                IsChecked="{Binding IsAnalysisSelected, Mode=OneWay}" 
+                                Command="{Binding ShowAnalysisCommand}"
+                                Style="{StaticResource ModernNavButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊" FontSize="18" Margin="0,0,12,0"/>
+                            <TextBlock Text="{DynamicResource Resource_Analysis_Title}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton GroupName="MenuGroup" 
+                                IsChecked="{Binding IsWarningLogSelected, Mode=OneWay}" 
+                                Command="{Binding ShowWarningLogCommand}"
+                                Style="{StaticResource ModernNavButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚠️" FontSize="18" Margin="0,0,12,0"/>
+                            <TextBlock Text="{DynamicResource WarningLog_Title}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton GroupName="MenuGroup" 
+                                IsChecked="{Binding IsSettingsSelected, Mode=OneWay}" 
+                                Command="{Binding ShowSettingsCommand}"
+                                Style="{StaticResource ModernNavButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙️" FontSize="18" Margin="0,0,12,0"/>
+                            <TextBlock Text="{DynamicResource Settings_Title}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+
+                <!-- 📍 Version Info -->
+                <Border Grid.Row="3" 
+                        Background="{DynamicResource GlassBrush}" 
+                        CornerRadius="12" 
+                        Margin="20,20,20,30"
+                        Padding="16,12">
+                    <StackPanel>
+                        <TextBlock x:Name="VersionTextBlock" 
+                                  Text="v1.0.0" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}" 
+                                  FontSize="12"
+                                  FontWeight="Medium"/>
+                        <TextBlock Text="© 2024 TaskLens" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}" 
+                                  FontSize="10"
+                                  Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
 
         <!-- 📌 우측 콘텐츠 영역 -->
         <ContentControl Grid.Column="1" Content="{Binding CurrentView}" />

@@ -5,95 +5,322 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid Margin="20">
-        <Grid.Resources>
-            <Style TargetType="DataGridRow">
-                <Setter Property="Opacity" Value="0"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Background" Value="#2D2D30"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Style.Triggers>
-                    <EventTrigger RoutedEvent="Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                     From="0" To="1" Duration="0:0:0.8"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                    <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="#444" />
-                        <Setter Property="Foreground" Value="White" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <ContextMenu x:Key="ProcessContextMenu">
-                <MenuItem Header="작업 끝내기" Click="KillProcess_Click" />
-                <MenuItem Header="파일 위치 열기" Click="OpenFileLocation_Click" />
-            </ContextMenu>
-        </Grid.Resources>
+             
+    <UserControl.Resources>
+        <!-- 🎨 Modern DataGrid Row Style -->
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Height" Value="50"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AccentSecondaryBrush}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- 📊 Chart Container Style -->
+        <Style x:Key="ChartContainerStyle" TargetType="Border" BasedOn="{StaticResource ModernCardStyle}">
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        
+        <!-- 🖱️ Modern Context Menu -->
+        <ContextMenu x:Key="ProcessContextMenu" 
+                     Background="{DynamicResource CardBrush}"
+                     BorderBrush="{DynamicResource BorderBrush}"
+                     BorderThickness="1">
+            <ContextMenu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                    <Setter Property="Padding" Value="12,8"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ContextMenu.Resources>
+            <MenuItem Header="🔴 작업 끝내기" Click="KillProcess_Click" />
+            <MenuItem Header="📁 파일 위치 열기" Click="OpenFileLocation_Click" />
+        </ContextMenu>
+    </UserControl.Resources>
+    
+    <Grid Margin="40" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="1.1*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{DynamicResource Resource_Usage_Analysis}"
-                   FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"
-                   Margin="0,0,0,20"/>
+        <!-- 🌟 Hero Section -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+            <TextBlock Text="Resource Analytics" 
+                       FontSize="32" 
+                       FontWeight="Light" 
+                       Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="실시간 시스템 리소스 사용량 분석 및 모니터링" 
+                       FontSize="16" 
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,8,0,0"/>
+        </StackPanel>
 
-        <UniformGrid Rows="2" Grid.Row="1" Margin="0 0 0 20">
-            <!-- CPU 차트 -->
-            <GroupBox Header="{DynamicResource Cpu_Usage}" Margin="0 0 0 20">
-                <lvc:CartesianChart Series="{Binding CpuSeries}" />
-            </GroupBox>
+        <!-- 📊 Charts Section -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- RAM 차트 -->
-            <GroupBox Header="{DynamicResource Ram_Usage}">
-                <lvc:CartesianChart Series="{Binding RamSeries}" />
-            </GroupBox>
-        </UniformGrid>
+            <!-- 💻 CPU Chart -->
+            <Border Grid.Column="0" Style="{StaticResource ChartContainerStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Background="{DynamicResource CpuCardBrush}" 
+                                CornerRadius="8" 
+                                Width="32" 
+                                Height="32" 
+                                Margin="0,0,12,0">
+                            <TextBlock Text="💻" 
+                                      FontSize="16" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="CPU Usage" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="Processor Performance" 
+                                      FontSize="12" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <lvc:CartesianChart Grid.Row="1" 
+                                       Series="{Binding CpuSeries}"
+                                       Background="Transparent"
+                                       Foreground="{DynamicResource TextBrush}"/>
+                </Grid>
+            </Border>
 
-        <DataGrid x:Name="ProcessGrid" ItemsSource="{Binding TopProcessList}"
-                  SelectedItem="{Binding SelectedProcess}" AutoGenerateColumns="False" 
-                  IsReadOnly="True" Margin="0,00,0,0" HeadersVisibility="Column" PreviewKeyDown="ProcessGrid_PreviewKeyDown"
-                  PreviewMouseRightButtonDown="ProcessGrid_PreviewMouseRightButtonDown"
-                  GridLinesVisibility="None" RowBackground="#2D2D30" ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                  AlternatingRowBackground="#2A2A2A" Background="#2D2D30" Foreground="White" BorderBrush="Transparent"
-                  SelectionUnit="FullRow" Grid.Row="2"
-                  ContextMenu="{StaticResource ProcessContextMenu}">
-            <DataGrid.Resources>
-                <!-- 헤더 스타일 -->
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="#1E1E1E"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="BorderBrush" Value="#444"/>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="{DynamicResource Process_Title}" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,6,0"/>
-                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Foreground="White"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="RAM (MB)" Binding="{Binding Ram, StringFormat={}{0:F1}}" Width="100" />
-            </DataGrid.Columns>
-        </DataGrid>
+            <!-- 🧠 RAM Chart -->
+            <Border Grid.Column="2" Style="{StaticResource ChartContainerStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <Border Background="{DynamicResource RamCardBrush}" 
+                                CornerRadius="8" 
+                                Width="32" 
+                                Height="32" 
+                                Margin="0,0,12,0">
+                            <TextBlock Text="🧠" 
+                                      FontSize="16" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Memory Usage" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="RAM Utilization" 
+                                      FontSize="12" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <lvc:CartesianChart Grid.Row="1" 
+                                       Series="{Binding RamSeries}"
+                                       Background="Transparent"
+                                       Foreground="{DynamicResource TextBrush}"/>
+                </Grid>
+            </Border>
+        </Grid>
 
-        <TextBlock Grid.Row="3" Text="{DynamicResource Process_Info_Tip}"
-                   Margin="0 5 0 0" TextWrapping="Wrap"></TextBlock>
-        <Border Grid.Row="3" BorderBrush="LightGray" BorderThickness="2.5" Margin="0 25 0 0" >
-            <TextBlock Text="{Binding AiResultText}" FontSize="14" TextWrapping="Wrap"
-                       Background="#2D2D30" Foreground="White" Padding="5"/>
+        <!-- 🔥 Process Dashboard -->
+        <Border Grid.Row="3" Style="{StaticResource ModernCardStyle}" Padding="24">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Section Header -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Background="{DynamicResource AccentBrush}" 
+                            CornerRadius="8" 
+                            Width="32" 
+                            Height="32" 
+                            Margin="0,0,12,0">
+                        <TextBlock Text="⚡" 
+                                  FontSize="16" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Top Processes" 
+                                  FontSize="20" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextBrush}"/>
+                        <TextBlock Text="리소스 사용량 기준 상위 프로세스 (F2: AI 분석)" 
+                                  FontSize="12" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Modern DataGrid -->
+                <DataGrid Grid.Row="1"
+                         x:Name="ProcessGrid" 
+                         ItemsSource="{Binding TopProcessList}"
+                         SelectedItem="{Binding SelectedProcess}" 
+                         AutoGenerateColumns="False" 
+                         IsReadOnly="True" 
+                         HeadersVisibility="Column" 
+                         PreviewKeyDown="ProcessGrid_PreviewKeyDown"
+                         PreviewMouseRightButtonDown="ProcessGrid_PreviewMouseRightButtonDown"
+                         GridLinesVisibility="None" 
+                         Background="Transparent"
+                         BorderBrush="Transparent"
+                         BorderThickness="0"
+                         SelectionUnit="FullRow"
+                         ContextMenu="{StaticResource ProcessContextMenu}">
+                    
+                    <DataGrid.Resources>
+                        <!-- Modern Header Style -->
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="16,12"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                        
+                        <!-- Modern Cell Style -->
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="16,8"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Process" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Border Background="{DynamicResource SurfaceBrush}" 
+                                               CornerRadius="6" 
+                                               Width="32" 
+                                               Height="32" 
+                                               Margin="0,0,12,0">
+                                            <Image Source="{Binding Icon}" 
+                                                  Width="20" 
+                                                  Height="20"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" 
+                                                      FontWeight="SemiBold"
+                                                      FontSize="14"
+                                                      Foreground="{DynamicResource TextBrush}"/>
+                                            <TextBlock Text="Active Process" 
+                                                      FontSize="11"
+                                                      Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTemplateColumn Header="Memory Usage" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Ram, StringFormat={}{0:F1} MB}" 
+                                                  FontWeight="SemiBold"
+                                                  FontSize="14"
+                                                  Foreground="{DynamicResource TextBrush}"/>
+                                        <Border Background="{DynamicResource SurfaceBrush}" 
+                                               CornerRadius="2" 
+                                               Height="4" 
+                                               Margin="0,4,0,0">
+                                            <Border Background="{DynamicResource RamCardBrush}" 
+                                                   CornerRadius="2" 
+                                                   HorizontalAlignment="Left"
+                                                   Width="50"/>
+                                        </Border>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- 🤖 AI Analysis Result -->
+        <Border Grid.Row="4" 
+                Style="{StaticResource ModernCardStyle}" 
+                Padding="24" 
+                Margin="0,20,0,0"
+                MinHeight="120">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0"
+                        Background="{DynamicResource AccentBrush}" 
+                        CornerRadius="12" 
+                        Width="48" 
+                        Height="48" 
+                        Margin="0,0,20,0"
+                        VerticalAlignment="Top">
+                    <TextBlock Text="🤖" 
+                              FontSize="24" 
+                              HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"/>
+                </Border>
+                
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="AI Process Analysis" 
+                              FontSize="18" 
+                              FontWeight="SemiBold" 
+                              Foreground="{DynamicResource TextBrush}"
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding AiResultText, FallbackValue='프로세스를 선택하고 F2 키를 눌러 AI 분석을 시작하세요.'}" 
+                              FontSize="14" 
+                              TextWrapping="Wrap"
+                              LineHeight="20"
+                              Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

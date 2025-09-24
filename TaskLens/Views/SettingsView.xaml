@@ -6,97 +6,338 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="SettingsCheckBoxStyle" TargetType="CheckBox">
+        <!-- 🎨 Modern Toggle Switch Style -->
+        <Style x:Key="ModernToggleStyle" TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,14"/>
             <Setter Property="FontSize" Value="15"/>
-        </Style>
-        <Style x:Key="SettingsButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="10,4"/>
-            <Setter Property="Margin" Value="0,20,0,0"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Width" Value="120"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ContentPresenter Grid.Column="0" 
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,16,0"/>
+                            
+                            <!-- Toggle Switch -->
+                            <Border Grid.Column="1"
+                                   x:Name="SwitchBorder"
+                                   Width="50" 
+                                   Height="26" 
+                                   CornerRadius="13"
+                                   Background="{DynamicResource BorderBrush}">
+                                <Border x:Name="SwitchThumb"
+                                       Width="20" 
+                                       Height="20" 
+                                       CornerRadius="10"
+                                       Background="White"
+                                       HorizontalAlignment="Left"
+                                       Margin="3,0,0,0">
+                                    <Border.RenderTransform>
+                                        <TranslateTransform x:Name="SwitchTransform"/>
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Border>
+                        </Grid>
+                        
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchBorder" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SwitchTransform"
+                                                           Storyboard.TargetProperty="X"
+                                                           To="24" Duration="0:0:0.2">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SwitchTransform"
+                                                           Storyboard.TargetProperty="X"
+                                                           To="0" Duration="0:0:0.2">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <!-- 💎 Setting Card Style -->
+        <Style x:Key="SettingCardStyle" TargetType="Border" BasedOn="{StaticResource ModernCardStyle}">
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="MinHeight" Value="80"/>
+        </Style>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource BackgroundBrush}" Margin="10">
+    <Grid Background="{DynamicResource BackgroundBrush}" Margin="40">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{DynamicResource Settings_Title}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="{DynamicResource TextBrush}"
-                   Margin="10,10,0,20"/>
+        <!-- 🌟 Hero Section -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,40">
+            <TextBlock Text="Settings &amp; Preferences" 
+                       FontSize="32" 
+                       FontWeight="Light" 
+                       Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="애플리케이션 동작 방식과 알림 설정을 관리하세요" 
+                       FontSize="16" 
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,8,0,0"/>
+        </StackPanel>
 
-        <Border Grid.Row="1"
-                Background="{DynamicResource CardBrush}"
-                CornerRadius="12"
-                Padding="30"
-                Margin="0"
-                Effect="{DynamicResource CardShadow}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                MinHeight="500"> <!-- 세로 길이 조정 -->
-            <StackPanel Orientation="Vertical" Width="340" VerticalAlignment="Stretch" HorizontalAlignment="Left">  
+        <!-- ⚙️ Settings Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+                
+                <!-- 🏃 System Settings Group -->
+                <TextBlock Text="System" 
+                          FontSize="20" 
+                          FontWeight="SemiBold" 
+                          Foreground="{DynamicResource TextBrush}"
+                          Margin="0,0,0,16"/>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="🚀" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
-                    <CheckBox Content="{DynamicResource AutoStart_Label}"
-                              Style="{StaticResource SettingsCheckBoxStyle}"
-                              IsChecked="{Binding AutoStart, Mode=TwoWay}" />
-                </StackPanel>
+                <!-- Auto Start Setting -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource AccentBrush}" 
+                                CornerRadius="12" 
+                                Width="40" 
+                                Height="40" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="🚀" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Auto Start" 
+                                      FontSize="16" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="시스템 시작 시 자동으로 TaskLens 실행" 
+                                      FontSize="13" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                        
+                        <CheckBox Grid.Column="2"
+                                 Style="{StaticResource ModernToggleStyle}"
+                                 IsChecked="{Binding AutoStart, Mode=TwoWay}"/>
+                    </Grid>
+                </Border>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="🖥️" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
-                    <CheckBox Content="{DynamicResource CpuWarning_Label}"
-                              Style="{StaticResource SettingsCheckBoxStyle}"
-                              IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}" />
-                </StackPanel>
+                <!-- 📊 Monitoring Settings Group -->
+                <TextBlock Text="Monitoring" 
+                          FontSize="20" 
+                          FontWeight="SemiBold" 
+                          Foreground="{DynamicResource TextBrush}"
+                          Margin="0,24,0,16"/>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="💾" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
-                    <CheckBox Content="{DynamicResource RamWarning_Label}"
-                              Style="{StaticResource SettingsCheckBoxStyle}"
-                              IsChecked="{Binding EnableRamWarning, Mode=TwoWay}" />
-                </StackPanel>
+                <!-- CPU Warning Setting -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource CpuCardBrush}" 
+                                CornerRadius="12" 
+                                Width="40" 
+                                Height="40" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="💻" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="CPU Alerts" 
+                                      FontSize="16" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="CPU 사용률이 높을 때 경고 알림 표시" 
+                                      FontSize="13" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                        
+                        <CheckBox Grid.Column="2"
+                                 Style="{StaticResource ModernToggleStyle}"
+                                 IsChecked="{Binding EnableCpuWarning, Mode=TwoWay}"/>
+                    </Grid>
+                </Border>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="🌙" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
-                    <CheckBox Content="{DynamicResource Theme_Label}"
-                              Style="{StaticResource SettingsCheckBoxStyle}"
-                              IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
-                </StackPanel>
+                <!-- RAM Warning Setting -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource RamCardBrush}" 
+                                CornerRadius="12" 
+                                Width="40" 
+                                Height="40" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="🧠" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Memory Alerts" 
+                                      FontSize="16" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="메모리 사용률이 높을 때 경고 알림 표시" 
+                                      FontSize="13" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                        
+                        <CheckBox Grid.Column="2"
+                                 Style="{StaticResource ModernToggleStyle}"
+                                 IsChecked="{Binding EnableRamWarning, Mode=TwoWay}"/>
+                    </Grid>
+                </Border>
 
-                <Separator Margin="0,10,0,10"/>
+                <!-- 🎨 Appearance Settings Group -->
+                <TextBlock Text="Appearance" 
+                          FontSize="20" 
+                          FontWeight="SemiBold" 
+                          Foreground="{DynamicResource TextBrush}"
+                          Margin="0,24,0,16"/>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="🌐" FontSize="18" Margin="0,0,8,0" Foreground="{DynamicResource TextBrush}"/>
-                    <ComboBox x:Name="LanguageComboBox" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
-                              DisplayMemberPath="DisplayName"
-                              Width="180"
-                              Margin="0,0,0,0"/>
-                </StackPanel>
+                <!-- Dark Theme Setting -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource WarningCardBrush}" 
+                                CornerRadius="12" 
+                                Width="40" 
+                                Height="40" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="🌙" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Dark Theme" 
+                                      FontSize="16" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="어두운 테마로 눈의 피로를 줄여보세요" 
+                                      FontSize="13" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                        
+                        <CheckBox Grid.Column="2"
+                                 Style="{StaticResource ModernToggleStyle}"
+                                 IsChecked="{Binding IsDarkTheme, Mode=TwoWay}"/>
+                    </Grid>
+                </Border>
 
-                <Button Content="{DynamicResource Save_Button}"
+                <!-- Language Setting -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource AccentSecondaryBrush}" 
+                                CornerRadius="12" 
+                                Width="40" 
+                                Height="40" 
+                                Margin="0,0,16,0">
+                            <TextBlock Text="🌐" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Language" 
+                                      FontSize="16" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Text="애플리케이션 언어 설정" 
+                                      FontSize="13" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Margin="0,2,0,0"/>
+                        </StackPanel>
+                        
+                        <ComboBox Grid.Column="2"
+                                 x:Name="LanguageComboBox" 
+                                 SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                                 DisplayMemberPath="DisplayName"
+                                 Width="150"
+                                 Height="36"
+                                 Background="{DynamicResource SurfaceBrush}"
+                                 Foreground="{DynamicResource TextBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
+                    </Grid>
+                </Border>
+
+                <!-- 💾 Save Button -->
+                <Button Content="💾 Save Changes"
                         Command="{Binding SaveSettingsCommand}"
-                        Style="{StaticResource SettingsButtonStyle}"/>
+                        Style="{StaticResource ModernButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Margin="0,32,0,40"
+                        Padding="24,12"
+                        FontSize="15"/>
             </StackPanel>
-        </Border>
+        </ScrollViewer>
     </Grid>
 </UserControl>

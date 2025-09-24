@@ -18,6 +18,10 @@ namespace TaskLens.ViewModels
             {
                 _currentView = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsHomeSelected));
+                OnPropertyChanged(nameof(IsAnalysisSelected));
+                OnPropertyChanged(nameof(IsWarningLogSelected));
+                OnPropertyChanged(nameof(IsSettingsSelected));
             }
         }
 
@@ -33,6 +37,12 @@ namespace TaskLens.ViewModels
         public ICommand ShowWarningLogCommand { get; }
         public ICommand ShowSettingsCommand { get; }
         public ICommand AnalyzeProcessCommand { get; }
+
+        // Navigation state properties
+        public bool IsHomeSelected => CurrentView == HomeView;
+        public bool IsAnalysisSelected => CurrentView == ResourceView;
+        public bool IsWarningLogSelected => CurrentView == WarningLogView;
+        public bool IsSettingsSelected => CurrentView == SettingsView;
 
 
         public MainViewModel()
