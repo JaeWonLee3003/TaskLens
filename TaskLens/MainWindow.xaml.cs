@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 using System.Diagnostics;
 using TaskLens.Core;
+using TaskLens.Theme;
 
 namespace TaskLens
 {
@@ -25,15 +26,16 @@ namespace TaskLens
     {
         private NotifyIcon _notifyIcon;
 
-        public MainWindow ()
+        public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
 
             this.Loaded += MainWindow_Loaded;
             
-
-            
+            // 테마 이벤트 구독
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            ThemeManager.Initialize();
         }
 
         private void MainWindow_Loaded (object sender, RoutedEventArgs e)
@@ -42,7 +44,7 @@ namespace TaskLens
 
             // 트레이 아이콘 생성
             _notifyIcon = new NotifyIcon();
-            _notifyIcon.Icon = new Icon("app.ico");  // ← 파일 없으면 에러
+            _notifyIcon.Icon = new Icon("Resources/app.ico");  // ← 파일 없으면 에러
             _notifyIcon.Visible = true;
             _notifyIcon.Text = "TaskLens 작업 관리자";
 
@@ -105,6 +107,54 @@ namespace TaskLens
         public void ShowBalloon (string title, string message, ToolTipIcon icon)
         {
             _notifyIcon?.ShowBalloonTip(3000, title, message, icon);
+        }
+
+        // 🪟 Custom Title Bar Event Handlers
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MaximizeButton_Click(sender, e);
+            }
+            else
+            {
+                this.DragMove();
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                MaximizeButton.Content = "🗖";
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                MaximizeButton.Content = "🗗";
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeManager.ToggleTheme();
+        }
+
+        private void OnThemeChanged(object sender, string themeName)
+        {
+            // 테마 전환 버튼 아이콘 업데이트
+            ThemeToggleButton.Content = ThemeManager.IsDarkTheme ? "☀️" : "🌙";
         }
     }
 }

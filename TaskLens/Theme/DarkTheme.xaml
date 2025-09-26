@@ -7,8 +7,8 @@
     <Color x:Key="PrimaryColor">#FF1A1A1A</Color>
     <Color x:Key="SecondaryColor">#FF2A2A2A</Color>
     <Color x:Key="SurfaceColor">#FF1E1E1E</Color>
-    <Color x:Key="AccentColor">#FF6366F1</Color>
-    <Color x:Key="AccentSecondaryColor">#FF8B5CF6</Color>
+    <Color x:Key="AccentColor">#FF1E88E5</Color>
+    <Color x:Key="AccentSecondaryColor">#FF1565C0</Color>
     
     <!-- Brushes -->
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}" />
@@ -22,18 +22,18 @@
     
     <!-- Modern Card Colors with Gradients -->
     <LinearGradientBrush x:Key="CpuCardBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF3B82F6" Offset="0"/>
-        <GradientStop Color="#FF1E40AF" Offset="1"/>
+        <GradientStop Color="#FF1E88E5" Offset="0"/>
+        <GradientStop Color="#FF1565C0" Offset="1"/>
     </LinearGradientBrush>
     
     <LinearGradientBrush x:Key="RamCardBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF10B981" Offset="0"/>
-        <GradientStop Color="#FF047857" Offset="1"/>
+        <GradientStop Color="#FF42A5F5" Offset="0"/>
+        <GradientStop Color="#FF1E88E5" Offset="1"/>
     </LinearGradientBrush>
     
     <LinearGradientBrush x:Key="WarningCardBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FFF59E0B" Offset="0"/>
-        <GradientStop Color="#FFD97706" Offset="1"/>
+        <GradientStop Color="#FFFF7043" Offset="0"/>
+        <GradientStop Color="#FFE64A19" Offset="1"/>
     </LinearGradientBrush>
     
     <!-- Glassmorphism Effect -->
@@ -113,6 +113,78 @@
         <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+    </Style>
+    
+    <!-- 🪟 Title Bar Button Styles -->
+    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="44"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource GlassBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FFE74C3C"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- 🎬 Page Transition Animations -->
+    <Storyboard x:Key="SlideInFromRight">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                         From="300" To="0" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1" Duration="0:0:0.2"/>
+    </Storyboard>
+    
+    <Storyboard x:Key="SlideOutToLeft">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                         From="0" To="-300" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0" Duration="0:0:0.2"/>
+    </Storyboard>
+    
+    <!-- 📱 Animated ContentControl Style -->
+    <Style x:Key="AnimatedContentControlStyle" TargetType="ContentControl">
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard Storyboard="{StaticResource SlideInFromRight}"/>
+            </EventTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

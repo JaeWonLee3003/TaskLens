@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
@@ -103,9 +104,9 @@
     <Compile Include="Core\OllamaClient.cs" />
     <Compile Include="Core\OllamaHelper.cs" />
     <Compile Include="Core\RelayCommand.cs" />
-    <Compile Include="Helpres\IconHelper.cs" />
-    <Compile Include="Helpres\LocalizationManager.cs" />
-    <Compile Include="Helpres\UIHelpers.cs" />
+    <Compile Include="Helpers\IconHelper.cs" />
+    <Compile Include="Helpers\LocalizationManager.cs" />
+    <Compile Include="Helpers\UIHelpers.cs" />
     <Compile Include="Models\ProcessInfoModel.cs" />
     <Compile Include="Theme\ThemeManager.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -198,9 +199,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.ico">
+    <None Include="Resources\app.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
