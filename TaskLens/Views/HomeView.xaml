@@ -67,13 +67,13 @@
         <!-- 🌟 Hero Section -->
         <StackPanel Grid.Row="0" Margin="0,0,0,40">
             <TextBlock Text="System Overview" Margin="20 20 20 0"
-                       FontSize="32" 
-                       FontWeight="Light" 
+                       FontSize="32"
+                       FontWeight="Light"
                        Foreground="{DynamicResource TextBrush}"
                        HorizontalAlignment="Left"/>
             <TextBlock Text="실시간 시스템 리소스 모니터링"
-                       FontSize="16" 
-                       FontWeight="Normal" 
+                       FontSize="16"
+                       FontWeight="Normal"
                        Foreground="{DynamicResource TextSecondaryBrush}"
                        Margin="20,28,20,0"
                        HorizontalAlignment="Left"/>
@@ -100,43 +100,43 @@
                         
                         <!-- Icon & Title -->
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="12" 
-                                    Width="48" 
-                                    Height="48" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="12"
+                                    Width="48"
+                                    Height="48"
                                     Margin="0,0,16,0">
-                                <TextBlock Text="💻" 
-                                          FontSize="24" 
-                                          HorizontalAlignment="Center" 
+                                <TextBlock Text="💻"
+                                          FontSize="24"
+                                          HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="CPU Usage" 
-                                          FontSize="18" 
-                                          FontWeight="SemiBold" 
+                                <TextBlock Text="CPU Usage"
+                                          FontSize="18"
+                                          FontWeight="SemiBold"
                                           Foreground="White"/>
-                                <TextBlock Text="Processor" 
-                                          FontSize="12" 
+                                <TextBlock Text="Processor"
+                                          FontSize="12"
                                           Foreground="#CCFFFFFF"/>
                             </StackPanel>
                         </StackPanel>
                         
                         <!-- Value -->
-                        <TextBlock Grid.Row="1" 
-                                  Text="{Binding CpuUsage}" 
-                                  FontSize="36" 
-                                  FontWeight="Bold" 
-                                  Foreground="White" 
+                        <TextBlock Grid.Row="1"
+                                  Text="{Binding CpuUsage}"
+                                  FontSize="36"
+                                  FontWeight="Bold"
+                                  Foreground="White"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
                         
                         <!-- Trend Indicator -->
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="4" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="4"
                                     Padding="8,4">
-                                <TextBlock Text="↗ Real-time" 
-                                          FontSize="11" 
+                                <TextBlock Text="↗ Real-time"
+                                          FontSize="11"
                                           Foreground="White"/>
                             </Border>
                         </StackPanel>
@@ -160,43 +160,43 @@
                         
                         <!-- Icon & Title -->
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="12" 
-                                    Width="48" 
-                                    Height="48" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="12"
+                                    Width="48"
+                                    Height="48"
                                     Margin="0,0,16,0">
-                                <TextBlock Text="🧠" 
-                                          FontSize="24" 
-                                          HorizontalAlignment="Center" 
+                                <TextBlock Text="🧠"
+                                          FontSize="24"
+                                          HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Memory Usage" 
-                                          FontSize="18" 
-                                          FontWeight="SemiBold" 
+                                <TextBlock Text="Memory Usage"
+                                          FontSize="18"
+                                          FontWeight="SemiBold"
                                           Foreground="White"/>
-                                <TextBlock Text="RAM" 
-                                          FontSize="12" 
+                                <TextBlock Text="RAM"
+                                          FontSize="12"
                                           Foreground="#CCFFFFFF"/>
                             </StackPanel>
                         </StackPanel>
                         
                         <!-- Value -->
-                        <TextBlock Grid.Row="1" 
-                                  Text="{Binding RamUsage}" 
-                                  FontSize="36" 
-                                  FontWeight="Bold" 
-                                  Foreground="White" 
+                        <TextBlock Grid.Row="1"
+                                  Text="{Binding RamUsage}"
+                                  FontSize="36"
+                                  FontWeight="Bold"
+                                  Foreground="White"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
                         
                         <!-- Trend Indicator -->
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="4" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="4"
                                     Padding="8,4">
-                                <TextBlock Text="📈 Monitoring" 
-                                          FontSize="11" 
+                                <TextBlock Text="📈 Monitoring"
+                                          FontSize="11"
                                           Foreground="White"/>
                             </Border>
                         </StackPanel>
@@ -220,43 +220,43 @@
                         
                         <!-- Icon & Title -->
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="12" 
-                                    Width="48" 
-                                    Height="48" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="12"
+                                    Width="48"
+                                    Height="48"
                                     Margin="0,0,16,0">
-                                <TextBlock Text="⚠️" 
-                                          FontSize="24" 
-                                          HorizontalAlignment="Center" 
+                                <TextBlock Text="⚠️"
+                                          FontSize="24"
+                                          HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="System Alerts" 
-                                          FontSize="18" 
-                                          FontWeight="SemiBold" 
+                                <TextBlock Text="System Alerts"
+                                          FontSize="18"
+                                          FontWeight="SemiBold"
                                           Foreground="White"/>
-                                <TextBlock Text="Warnings" 
-                                          FontSize="12" 
+                                <TextBlock Text="Warnings"
+                                          FontSize="12"
                                           Foreground="#CCFFFFFF"/>
                             </StackPanel>
                         </StackPanel>
                         
                         <!-- Value -->
-                        <TextBlock Grid.Row="1" 
-                                  Text="{Binding WarningCount}" 
-                                  FontSize="36" 
-                                  FontWeight="Bold" 
-                                  Foreground="White" 
+                        <TextBlock Grid.Row="1"
+                                  Text="{Binding WarningCount}"
+                                  FontSize="36"
+                                  FontWeight="Bold"
+                                  Foreground="White"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
                         
                         <!-- Status Indicator -->
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF" 
-                                    CornerRadius="4" 
+                            <Border Background="#33FFFFFF"
+                                    CornerRadius="4"
                                     Padding="8,4">
-                                <TextBlock Text="🛡️ Protected" 
-                                          FontSize="11" 
+                                <TextBlock Text="🛡️ Protected"
+                                          FontSize="11"
                                           Foreground="White"/>
                             </Border>
                         </StackPanel>

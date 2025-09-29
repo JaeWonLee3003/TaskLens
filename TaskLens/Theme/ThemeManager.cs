@@ -1,76 +1,46 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace TaskLens.Theme
 {
     public static class ThemeManager
     {
-        public static event EventHandler<string> ThemeChanged;
-        
-        private static string _currentTheme = "DarkTheme";
-        public static string CurrentTheme
+        public static void ApplyTheme (string themeName)
         {
-            get => _currentTheme;
-            private set
-            {
-                _currentTheme = value;
-                ThemeChanged?.Invoke(null, value);
-            }
-        }
+            //var dictionaries = Application.Current.Resources.MergedDictionaries;
+            //dictionaries.Clear();
 
-        public static bool IsDarkTheme => CurrentTheme == "DarkTheme";
+            //var newDict = new ResourceDictionary
+            //{
+            //    Source = new Uri($"Theme/{themeName}.xaml", UriKind.Relative)
+            //};
+            //dictionaries.Add(newDict);
 
-        public static void ApplyTheme(string themeName)
-        {
             var dictionaries = Application.Current.Resources.MergedDictionaries;
 
-            // 기존 테마 제거
-            var existingTheme = dictionaries.FirstOrDefault(d => 
-                d.Source?.OriginalString.Contains("Theme/") == true);
-            if (existingTheme != null)
-                dictionaries.Remove(existingTheme);
+            // 언어 리소스를 찾고, 제거하지 않도록 해야 합니다.
+            var languageDict = dictionaries.FirstOrDefault(d => d.Source?.OriginalString.Contains("StringResources") == true);
 
-            // 새 테마 적용
+            // 기존 리소스에 영향을 주지 않도록 언어 리소스를 그대로 두고, 테마만 변경
             var newDict = new ResourceDictionary
             {
                 Source = new Uri($"Theme/{themeName}.xaml", UriKind.Relative)
             };
+
+            // 테마 리소스만 추가
             dictionaries.Add(newDict);
 
-            CurrentTheme = themeName;
-        }
-
-        public static void ToggleTheme()
-        {
-            string newTheme = IsDarkTheme ? "LightTheme" : "DarkTheme";
-            ApplyTheme(newTheme);
-        }
-
-        public static void Initialize()
-        {
-            // 시스템 테마 감지 (Windows 10/11)
-            try
+            // 언어 리소스가 이미 있으면 다시 추가할 필요 없이 그대로 둠
+            if (languageDict != null)
             {
-                var registry = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
-                    @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-                
-                if (registry?.GetValue("AppsUseLightTheme") is int useLightTheme)
-                {
-                    string systemTheme = useLightTheme == 0 ? "DarkTheme" : "LightTheme";
-                    ApplyTheme(systemTheme);
-                }
-                else
-                {
-                    ApplyTheme("DarkTheme"); // 기본값
-                }
+                dictionaries.Add(languageDict);
             }
-            catch
-            {
-                ApplyTheme("DarkTheme"); // 오류 시 기본값
-            }
+
         }
     }
+
 }
