@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -56,15 +57,43 @@ namespace TaskLens.ViewModels
 
         public ResourceViewModel ()
         {
+            System.Diagnostics.Debug.WriteLine("🚀 ResourceViewModel 생성자 시작");
+
+            // 🎯 즉시 테스트 데이터 추가 (가장 먼저)
+            TopProcessList.Clear();
+            TopProcessList.Add(new ProcessInfoModel
+            {
+                Name = "Chrome.exe",
+                Ram = 250.5f,
+                Icon = IconHelper.DefaultProcessIcon,
+                AiDescription = "웹 브라우저"
+            });
+            TopProcessList.Add(new ProcessInfoModel
+            {
+                Name = "TaskLens.exe",
+                Ram = 45.2f,
+                Icon = IconHelper.DefaultProcessIcon,
+                AiDescription = "작업 관리자"
+            });
+            TopProcessList.Add(new ProcessInfoModel
+            {
+                Name = "Visual Studio.exe",
+                Ram = 512.8f,
+                Icon = IconHelper.DefaultProcessIcon,
+                AiDescription = "개발 도구"
+            });
+
+            System.Diagnostics.Debug.WriteLine($"✅ 테스트 데이터 추가 완료: {TopProcessList.Count}개");
+
             try
             {
                 _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
                 _ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+                System.Diagnostics.Debug.WriteLine("✅ Performance counters 초기화 성공");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Performance counter initialization failed: {ex.Message}");
-                // 성능 카운터 초기화 실패 시에도 계속 진행
+                System.Diagnostics.Debug.WriteLine($"❌ Performance counter initialization failed: {ex.Message}");
             }
 
             _totalRamMB = GetTotalPhysicalMemoryInMB();
@@ -94,22 +123,21 @@ namespace TaskLens.ViewModels
 
             _timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(2) // 1초 → 2초로 변경
+                Interval = TimeSpan.FromSeconds(2)
             };
             _timer.Tick += UpdateData;
 
-            _processUpdateTimer.Interval = TimeSpan.FromSeconds(10); // 5초 → 10초로 변경
+            _processUpdateTimer.Interval = TimeSpan.FromSeconds(5);
             _processUpdateTimer.Tick += (s, e) => UpdateTopProcesses();
+
+            // 타이머 시작
+            StartMonitoring();
 
             AnalyzeProcessCommand = new RelayCommand(async o =>
             {
                 if (SelectedProcess == null)
                 {
-                    MessageBox.Show(
-                        "먼저 프로세스를 선택해주세요.",
-                        "프로세스 미선택",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
+                    MessageBox.Show("먼저 프로세스를 선택해주세요.", "프로세스 미선택", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -117,7 +145,6 @@ namespace TaskLens.ViewModels
                 {
                     var result = await OllamaClient.GetProcessExplanationAsync(SelectedProcess.Name);
                     AiResultText = result;
-                    //SelectedProcess.AiDescription = result;
                 }
                 catch (Exception ex)
                 {
@@ -125,8 +152,9 @@ namespace TaskLens.ViewModels
                     System.Diagnostics.Debug.WriteLine($"Ollama client error: {ex.Message}");
                 }
             });
-        }
 
+            System.Diagnostics.Debug.WriteLine("🎉 ResourceViewModel 생성자 완료");
+        }
         private void UpdateData (object sender, EventArgs e)
         {
             try
@@ -192,75 +220,62 @@ namespace TaskLens.ViewModels
 
         private void UpdateTopProcesses ()
         {
-            // 🚀 백그라운드에서 비동기로 처리
-            Task.Run(() =>
+            System.Diagnostics.Debug.WriteLine("� UpdateTopProcesses 호출됨");
+
+            // 간단히 UI 스레드에서 직접 처리 (테스트용)
+            try
             {
-                try
+                var processes = Process.GetProcesses();
+                System.Diagnostics.Debug.WriteLine($"� 총 {processes.Length}개 프로세스 발견");
+
+                var processList = new List<ProcessInfoModel>();
+
+                foreach (var p in processes.Take(10)) // 처음 10개만
                 {
-                    var processList = Process.GetProcesses()
-                        .AsParallel() // 병렬 처리로 성능 향상
-                        .Where(p => !p.HasExited) // 종료된 프로세스 제외
-                        .Select(p =>
-                        {
-                            float ramMb = 0;
-                            ImageSource icon = IconHelper.DefaultProcessIcon; // 기본값 설정
-
-                            try
-                            {
-                                ramMb = p.WorkingSet64 / 1024f / 1024f;
-
-                                // 🎯 아이콘 로딩은 RAM이 높은 상위 10개만
-                                if (ramMb > 50) // 50MB 이상만 아이콘 로드
-                                {
-                                    string exePath = IconHelper.GetProcessPathSafe(p.ProcessName);
-                                    if (!string.IsNullOrEmpty(exePath))
-                                    {
-                                        icon = IconHelper.GetProcessIcon(exePath) ?? IconHelper.DefaultProcessIcon;
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                // 프로세스 접근 오류 시 기본값 유지
-                                System.Diagnostics.Debug.WriteLine($"Process access error for {p.ProcessName}: {ex.Message}");
-                            }
-                            finally
-                            {
-                                p?.Dispose(); // Process 객체 해제
-                            }
-
-                            return new ProcessInfoModel
-                            {
-                                Name = p.ProcessName,
-                                Ram = ramMb,
-                                Icon = icon,
-                                AiDescription = "분석 대기 중"
-                            };
-                        })
-                        .Where(p => !string.IsNullOrWhiteSpace(p.Name))
-                        .OrderByDescending(p => p.Ram)
-                        .Take(10)
-                        .ToList();
-
-                    // UI 스레드에서 컬렉션 업데이트
-                    if (Application.Current?.Dispatcher != null)
+                    try
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        if (p.HasExited) continue;
+
+                        var processInfo = new ProcessInfoModel
                         {
-                            TopProcessList.Clear();
-                            foreach (var p in processList)
-                                TopProcessList.Add(p);
-                        });
+                            Name = p.ProcessName,
+                            Ram = p.WorkingSet64 / 1024f / 1024f,
+                            Icon = IconHelper.DefaultProcessIcon,
+                            AiDescription = "실시간 프로세스"
+                        };
+
+                        processList.Add(processInfo);
+                    }
+                    catch
+                    {
+                        // 접근 실패한 프로세스는 무시
+                    }
+                    finally
+                    {
+                        p?.Dispose();
                     }
                 }
-                catch (Exception ex)
+
+                // 기존 테스트 데이터 유지하면서 실제 데이터 추가
+                var realProcesses = processList
+                    .Where(p => p.Ram > 5.0f) // 5MB 이상만
+                    .OrderByDescending(p => p.Ram)
+                    .Take(5)
+                    .ToList();
+
+                // 기존 항목에 실제 프로세스 추가 (중복 제거는 나중에)
+                foreach (var rp in realProcesses)
                 {
-                    System.Diagnostics.Debug.WriteLine($"UpdateTopProcesses error: {ex.Message}");
+                    TopProcessList.Add(rp);
                 }
-            });
+
+                System.Diagnostics.Debug.WriteLine($"✅ 업데이트 완료 - 현재 총 {TopProcessList.Count}개 항목");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ UpdateTopProcesses 오류: {ex.Message}");
+            }
         }
-
-
 
         private float GetTotalPhysicalMemoryInMB ()
         {
@@ -295,28 +310,30 @@ namespace TaskLens.ViewModels
             return 8192;
         }
 
-        // 🎯 타이머 제어 메서드
-        public void StartMonitoring()
+        public void StartMonitoring ()
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("⏰ StartMonitoring 시작");
+
                 if (_timer != null && !_timer.IsEnabled)
                 {
                     _timer.Start();
+                    System.Diagnostics.Debug.WriteLine("✅ Main timer 시작됨");
                 }
 
                 if (_processUpdateTimer != null && !_processUpdateTimer.IsEnabled)
                 {
                     _processUpdateTimer.Start();
+                    System.Diagnostics.Debug.WriteLine("✅ Process timer 시작됨");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"StartMonitoring error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ StartMonitoring error: {ex.Message}");
             }
         }
-
-        public void StopMonitoring()
+        public void StopMonitoring ()
         {
             try
             {

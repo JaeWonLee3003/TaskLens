@@ -7,39 +7,63 @@
              Height="Auto" Width="Auto">
 
     <UserControl.Resources>
-        <!-- 🎨 Modern Card Animations -->
+        <!-- 🎨 Enhanced Card Animations -->
         <Storyboard x:Key="CardHoverIn">
             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                           To="1.05" Duration="0:0:0.2">
+                           To="1.02" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                           To="1.05" Duration="0:0:0.2">
+                           To="1.02" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                           To="20" Duration="0:0:0.15"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)"
+                           To="0.3" Duration="0:0:0.15"/>
         </Storyboard>
-        
+
         <Storyboard x:Key="CardHoverOut">
             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
                            To="1.0" Duration="0:0:0.2">
                 <DoubleAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
                            To="1.0" Duration="0:0:0.2">
                 <DoubleAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                           To="10" Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)"
+                           To="0.1" Duration="0:0:0.2"/>
         </Storyboard>
 
-        <!-- ✨ Glassmorphism Card Style -->
-        <Style x:Key="StatCardStyle" TargetType="Border" BasedOn="{StaticResource GlassCardStyle}">
+        <!-- ✨ Modern Card Style -->
+        <Style x:Key="ModernStatCardStyle" TargetType="Border">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{DynamicResource CardBackgroundColor}" Offset="0"/>
+                        <GradientStop Color="{DynamicResource CardBackgroundColorSecondary}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="0"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="RenderTransform">
                 <Setter.Value>
                     <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -55,211 +79,268 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
+
+        <!-- 🎯 Metric Value Style -->
+        <Style x:Key="MetricValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- 📊 Metric Label Style -->
+        <Style x:Key="MetricLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
     </UserControl.Resources>
 
-    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 🌟 Hero Section -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,40">
-            <TextBlock Text="System Overview" Margin="20 20 20 0"
-                       FontSize="32"
-                       FontWeight="Light"
-                       Foreground="{DynamicResource TextBrush}"
-                       HorizontalAlignment="Left"/>
-            <TextBlock Text="실시간 시스템 리소스 모니터링"
-                       FontSize="16"
-                       FontWeight="Normal"
-                       Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="20,28,20,0"
-                       HorizontalAlignment="Left"/>
-        </StackPanel>
+        <!-- 🌟 Header Section -->
+        <Border Grid.Row="0" Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Margin="0,0,0,24" Padding="24">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- 📊 Stats Cards - Responsive Layout -->
-        <ScrollViewer Grid.Row="2" Margin="20,40" VerticalScrollBarVisibility="Auto">
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                <!-- Icon -->
+                <Border Grid.Column="0" Background="{DynamicResource AccentBrush}" CornerRadius="12" Width="56" Height="56" Margin="0,0,20,0">
+                    <Path Data="M12 2C13.1 2 14 2.9 14 4V8H18C19.1 8 20 8.9 20 10V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2H12ZM12 4H6V20H18V10H14V4Z"
+                          Fill="White" Stretch="Uniform" Width="24" Height="24"/>
+                </Border>
 
-                <!-- 💻 CPU Card -->
-                <Border Style="{StaticResource StatCardStyle}"
-                        Background="{DynamicResource CpuCardBrush}"
-                        Padding="32"
-                        MinHeight="180"
-                        Width="300"
-                        Margin="10"
-                        Cursor="Hand">
+                <!-- Title & Subtitle -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="System Overview"
+                               FontSize="28"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextBrush}"
+                               Margin="0,0,0,4"/>
+                    <TextBlock Text="실시간 시스템 리소스 모니터링 대시보드"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+
+                <!-- Status Indicator -->
+                <Border Grid.Column="2" Background="{DynamicResource SuccessBrush}" CornerRadius="20" Padding="12,6" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                              Fill="White" Stretch="Uniform" Width="16" Height="16"/>
+                        <TextBlock Text="정상 작동"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   Margin="8,0,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- 📈 Quick Stats -->
+        <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Margin="0,0,0,24" Padding="24">
+            <StackPanel>
+                <TextBlock Text="빠른 통계"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextBrush}"
+                           Margin="0,0,0,16"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Active Processes -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource InfoBrush}" CornerRadius="8" Width="40" Height="40" Margin="0,0,12,0">
+                            <Path Data="M4 6H20V16H4V6ZM2 4V18H22V4H2Z"
+                                  Fill="White" Stretch="Uniform" Width="20" Height="20"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="실행 중인 프로세스"
+                                       Style="{StaticResource MetricLabelStyle}"/>
+                            <TextBlock Text="127개"
+                                       Style="{StaticResource MetricValueStyle}"
+                                       FontSize="20"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- System Uptime -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource WarningBrush}" CornerRadius="8" Width="40" Height="40" Margin="0,0,12,0">
+                            <Path Data="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z"
+                                  Fill="White" Stretch="Uniform" Width="20" Height="20"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="시스템 가동 시간"
+                                       Style="{StaticResource MetricLabelStyle}"/>
+                            <TextBlock Text="2시간 34분"
+                                       Style="{StaticResource MetricValueStyle}"
+                                       FontSize="20"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Network Status -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource SuccessBrush}" CornerRadius="8" Width="40" Height="40" Margin="0,0,12,0">
+                            <Path Data="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                                  Fill="White" Stretch="Uniform" Width="20" Height="20"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="네트워크 상태"
+                                       Style="{StaticResource MetricLabelStyle}"/>
+                            <TextBlock Text="연결됨"
+                                       Style="{StaticResource MetricValueStyle}"
+                                       FontSize="20"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- 📊 Main Stats Cards -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                <!-- 💻 CPU Usage Card -->
+                <Border Style="{StaticResource ModernStatCardStyle}"
+                        Width="320"
+                        Height="200"
+                        Margin="8"
+                        Padding="24">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
-                        <!-- Icon & Title -->
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="12"
-                                    Width="48"
-                                    Height="48"
-                                    Margin="0,0,16,0">
-                                <TextBlock Text="💻"
-                                          FontSize="24"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+
+                        <!-- Header -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                            <Border Background="{DynamicResource CpuCardBrush}" CornerRadius="10" Width="44" Height="44" Margin="0,0,16,0">
+                                <Path Data="M8 2C6.9 2 6 2.9 6 4V20C6 21.1 6.9 22 8 22H16C17.1 22 18 21.1 18 20V4C18 2.9 17.1 2 16 2H8ZM8 4H16V20H8V4Z"
+                                      Fill="White" Stretch="Uniform" Width="20" Height="20"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="CPU Usage"
-                                          FontSize="18"
-                                          FontWeight="SemiBold"
-                                          Foreground="White"/>
-                                <TextBlock Text="Processor"
-                                          FontSize="12"
-                                          Foreground="#CCFFFFFF"/>
+                                <TextBlock Text="CPU 사용률"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextBrush}"/>
+                                <TextBlock Text="프로세서"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
                             </StackPanel>
                         </StackPanel>
-                        
+
                         <!-- Value -->
                         <TextBlock Grid.Row="1"
-                                  Text="{Binding CpuUsage}"
-                                  FontSize="36"
-                                  FontWeight="Bold"
-                                  Foreground="White"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"/>
-                        
-                        <!-- Trend Indicator -->
-                        <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="4"
-                                    Padding="8,4">
-                                <TextBlock Text="↗ Real-time"
-                                          FontSize="11"
-                                          Foreground="White"/>
-                            </Border>
-                        </StackPanel>
+                                   Text="{Binding CpuUsage}"
+                                   Style="{StaticResource MetricValueStyle}"/>
+
+                        <!-- Progress Bar -->
+                        <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}" CornerRadius="4" Height="6" Margin="0,12,0,0">
+                            <Border Background="{DynamicResource CpuCardBrush}" CornerRadius="4" HorizontalAlignment="Left" Width="120"/>
+                        </Border>
                     </Grid>
                 </Border>
 
-                <!-- 🧠 RAM Card -->
-                <Border Style="{StaticResource StatCardStyle}"
-                        Background="{DynamicResource RamCardBrush}"
-                        Padding="32"
-                        MinHeight="180"
-                        Width="300"
-                        Margin="10"
-                        Cursor="Hand">
+                <!-- 🧠 Memory Usage Card -->
+                <Border Style="{StaticResource ModernStatCardStyle}"
+                        Width="320"
+                        Height="200"
+                        Margin="8"
+                        Padding="24">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
-                        <!-- Icon & Title -->
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="12"
-                                    Width="48"
-                                    Height="48"
-                                    Margin="0,0,16,0">
-                                <TextBlock Text="🧠"
-                                          FontSize="24"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+
+                        <!-- Header -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                            <Border Background="{DynamicResource RamCardBrush}" CornerRadius="10" Width="44" Height="44" Margin="0,0,16,0">
+                                <Path Data="M4 6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V18C20 19.1 19.1 20 18 20H6C4.9 20 4 19.1 4 18V6ZM6 6V18H18V6H6Z"
+                                      Fill="White" Stretch="Uniform" Width="20" Height="20"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Memory Usage"
-                                          FontSize="18"
-                                          FontWeight="SemiBold"
-                                          Foreground="White"/>
+                                <TextBlock Text="메모리 사용률"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextBrush}"/>
                                 <TextBlock Text="RAM"
-                                          FontSize="12"
-                                          Foreground="#CCFFFFFF"/>
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
                             </StackPanel>
                         </StackPanel>
-                        
+
                         <!-- Value -->
                         <TextBlock Grid.Row="1"
-                                  Text="{Binding RamUsage}"
-                                  FontSize="36"
-                                  FontWeight="Bold"
-                                  Foreground="White"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"/>
-                        
-                        <!-- Trend Indicator -->
-                        <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="4"
-                                    Padding="8,4">
-                                <TextBlock Text="📈 Monitoring"
-                                          FontSize="11"
-                                          Foreground="White"/>
-                            </Border>
-                        </StackPanel>
+                                   Text="{Binding RamUsage}"
+                                   Style="{StaticResource MetricValueStyle}"/>
+
+                        <!-- Progress Bar -->
+                        <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}" CornerRadius="4" Height="6" Margin="0,12,0,0">
+                            <Border Background="{DynamicResource RamCardBrush}" CornerRadius="4" HorizontalAlignment="Left" Width="180"/>
+                        </Border>
                     </Grid>
                 </Border>
 
-                <!-- ⚠️ Warnings Card -->
-                <Border Style="{StaticResource StatCardStyle}"
-                        Background="{DynamicResource WarningCardBrush}"
-                        Padding="32"
-                        MinHeight="180"
-                        Width="300"
-                        Margin="10"
-                        Cursor="Hand">
+                <!-- ⚠️ System Alerts Card -->
+                <Border Style="{StaticResource ModernStatCardStyle}"
+                        Width="320"
+                        Height="200"
+                        Margin="8"
+                        Padding="24">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
-                        <!-- Icon & Title -->
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="12"
-                                    Width="48"
-                                    Height="48"
-                                    Margin="0,0,16,0">
-                                <TextBlock Text="⚠️"
-                                          FontSize="24"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+
+                        <!-- Header -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                            <Border Background="{DynamicResource WarningCardBrush}" CornerRadius="10" Width="44" Height="44" Margin="0,0,16,0">
+                                <Path Data="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z"
+                                      Fill="White" Stretch="Uniform" Width="20" Height="20"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="System Alerts"
-                                          FontSize="18"
-                                          FontWeight="SemiBold"
-                                          Foreground="White"/>
-                                <TextBlock Text="Warnings"
-                                          FontSize="12"
-                                          Foreground="#CCFFFFFF"/>
+                                <TextBlock Text="시스템 경고"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextBrush}"/>
+                                <TextBlock Text="알림"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
                             </StackPanel>
                         </StackPanel>
-                        
+
                         <!-- Value -->
                         <TextBlock Grid.Row="1"
-                                  Text="{Binding WarningCount}"
-                                  FontSize="36"
-                                  FontWeight="Bold"
-                                  Foreground="White"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"/>
-                        
-                        <!-- Status Indicator -->
-                        <StackPanel Grid.Row="2" Orientation="Horizontal">
-                            <Border Background="#33FFFFFF"
-                                    CornerRadius="4"
-                                    Padding="8,4">
-                                <TextBlock Text="🛡️ Protected"
-                                          FontSize="11"
-                                          Foreground="White"/>
-                            </Border>
-                        </StackPanel>
+                                   Text="{Binding WarningCount}"
+                                   Style="{StaticResource MetricValueStyle}"/>
+
+                        <!-- Status -->
+                        <Border Grid.Row="2" Background="{DynamicResource SuccessBrush}" CornerRadius="16" Padding="12,6" Margin="0,12,0,0" HorizontalAlignment="Left">
+                            <TextBlock Text="모든 시스템 정상"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"/>
+                        </Border>
                     </Grid>
                 </Border>
             </WrapPanel>

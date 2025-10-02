@@ -9,18 +9,35 @@ namespace TaskLens.Helpers
 {
     public static class IconHelper
     {
-        public static ImageSource DefaultProcessIcon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/DefaultProcess.png"));
+        public static ImageSource DefaultProcessIcon { get; private set; }
 
         static IconHelper()
         {
             try
             {
-                // 리소스 경로가 실제로 존재하는지 확인!
-                DefaultProcessIcon = new BitmapImage(new Uri("pack://application:,,,/Resources/DefaultProcess.png"));
+                // app.ico를 기본 아이콘으로 사용
+                var icon = new Icon("Resources/app.ico");
+                var bmp = icon.ToBitmap();
+                var stream = new MemoryStream();
+                bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = stream;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+
+                DefaultProcessIcon = bitmap;
+
+                // 자원 해제
+                bmp.Dispose();
+                icon.Dispose();
+                stream.Dispose();
             }
             catch (Exception ex)
             {
-                // 예외 발생 시 null로 처리 (또는 다른 안전한 기본값)
+                // 예외 발생 시 null로 처리
                 DefaultProcessIcon = null;
                 System.Diagnostics.Debug.WriteLine($"[IconHelper] 기본 아이콘 로딩 실패: {ex.Message}");
             }

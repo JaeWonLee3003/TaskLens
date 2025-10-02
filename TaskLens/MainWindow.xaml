@@ -4,166 +4,274 @@
         xmlns:local="clr-namespace:TaskLens"
         Title="TaskLens 작업 관리자" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         Icon="app.ico">
 
-    <Grid>
-        <Grid.Resources>
-            <!-- 🎨 Modern Navigation Style -->
-            <Style x:Key="ModernNavButtonStyle" TargetType="RadioButton">
-                <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Height" Value="56"/>
-                <Setter Property="Margin" Value="8,4"/>
-                <Setter Property="FontSize" Value="15"/>
-                <Setter Property="FontWeight" Value="Medium"/>
-                <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                <Setter Property="Padding" Value="20,0"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="RadioButton">
-                            <Border x:Name="Border" 
-                                   Background="{TemplateBinding Background}" 
-                                   CornerRadius="12"
-                                   BorderBrush="{TemplateBinding BorderBrush}"
-                                   BorderThickness="{TemplateBinding BorderThickness}">
-                                <ContentPresenter x:Name="ContentPresenter"
-                                                VerticalAlignment="Center" 
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                Margin="{TemplateBinding Padding}"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource GlassBrush}"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
-                                    <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentSecondaryBrush}"/>
-                                    <Setter TargetName="Border" Property="BorderThickness" Value="1"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <!-- 사이드 메뉴 -->
-            <ColumnDefinition Width="*"/>
-            <!-- 메인 콘텐츠 -->
-        </Grid.ColumnDefinitions>
+    <Border Background="{DynamicResource BackgroundBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="12">
+        <Grid>
+            <Grid.Resources>
+                <!-- 🎨 Modern Navigation Style -->
+                <Style x:Key="ModernNavButtonStyle" TargetType="RadioButton">
+                    <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Height" Value="56"/>
+                    <Setter Property="Margin" Value="8,4"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="Padding" Value="20,0"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RadioButton">
+                                <Border x:Name="Border"
+                                       Background="{TemplateBinding Background}"
+                                       CornerRadius="12"
+                                       BorderBrush="{TemplateBinding BorderBrush}"
+                                       BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter x:Name="ContentPresenter"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource GlassBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentSecondaryBrush}"/>
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
 
-        <!-- � Modern Sidebar Navigation -->
-        <Border Grid.Column="0" 
-                Background="{DynamicResource SurfaceBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="0,0,1,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <!-- 🎯 Custom Title Bar Buttons -->
+                <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Width" Value="46"/>
+                    <Setter Property="Height" Value="32"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Border"
+                                       Background="{TemplateBinding Background}"
+                                       CornerRadius="4">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#33FFFFFF"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#66FFFFFF"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
 
-                <!-- 🎯 App Header -->
-                <StackPanel Grid.Row="0" Margin="20,30,20,40">
-                    <Border Background="{DynamicResource AccentBrush}" 
-                            CornerRadius="16" 
-                            Width="64" 
-                            Height="64" 
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,16"
-                            Effect="{DynamicResource CardShadow}">
-                        <Image Source="./app.ico" 
-                               Width="50" 
-                               Height="50"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                    <TextBlock Text="TaskLens" 
-                              Foreground="{DynamicResource TextBrush}" 
-                              FontSize="24" 
-                              FontWeight="Bold"
-                              Margin="0,0,0,4"/>
-                    <TextBlock Text="System Monitor" 
-                              Foreground="{DynamicResource TextSecondaryBrush}" 
-                              FontSize="13"/>
-                </StackPanel>
-                
-                <!-- 🧭 Navigation Menu -->
-                <StackPanel Grid.Row="2" Margin="12,20,12,0">
-                    
-                    <RadioButton GroupName="MenuGroup" 
-                                IsChecked="{Binding IsHomeSelected, Mode=OneWay}" 
-                                Command="{Binding ShowHomeCommand}"
-                                Style="{StaticResource ModernNavButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🏠" FontSize="18" Margin="0,0,12,0"/>
-                            <TextBlock Text="{DynamicResource Home_Title}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </RadioButton>
-                    
-                    <RadioButton GroupName="MenuGroup" 
-                                IsChecked="{Binding IsAnalysisSelected, Mode=OneWay}" 
-                                Command="{Binding ShowAnalysisCommand}"
-                                Style="{StaticResource ModernNavButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📊" FontSize="18" Margin="0,0,12,0"/>
-                            <TextBlock Text="{DynamicResource Resource_Analysis_Title}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </RadioButton>
-                    
-                    <RadioButton GroupName="MenuGroup" 
-                                IsChecked="{Binding IsWarningLogSelected, Mode=OneWay}" 
-                                Command="{Binding ShowWarningLogCommand}"
-                                Style="{StaticResource ModernNavButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="⚠️" FontSize="18" Margin="0,0,12,0"/>
-                            <TextBlock Text="{DynamicResource WarningLog_Title}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </RadioButton>
-                    
-                    <RadioButton GroupName="MenuGroup" 
-                                IsChecked="{Binding IsSettingsSelected, Mode=OneWay}" 
-                                Command="{Binding ShowSettingsCommand}"
-                                Style="{StaticResource ModernNavButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="⚙️" FontSize="18" Margin="0,0,12,0"/>
-                            <TextBlock Text="{DynamicResource Settings_Title}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </RadioButton>
-                </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <!-- Custom Title Bar -->
+                <RowDefinition Height="*"/>
+                <!-- Main Content -->
+            </Grid.RowDefinitions>
 
-                <!-- 📍 Version Info -->
-                <Border Grid.Row="3" 
-                        Background="{DynamicResource GlassBrush}" 
-                        CornerRadius="12" 
-                        Margin="20,20,20,30"
-                        Padding="16,12">
-                    <StackPanel>
-                        <TextBlock x:Name="VersionTextBlock" 
-                                  Text="v1.0.0" 
-                                  Foreground="{DynamicResource TextSecondaryBrush}" 
-                                  FontSize="12"
-                                  FontWeight="Medium"/>
-                        <TextBlock Text="© 2024 TaskLens" 
-                                  Foreground="{DynamicResource TextSecondaryBrush}" 
-                                  FontSize="10"
-                                  Margin="0,2,0,0"/>
+            <!-- 🎨 Custom Title Bar -->
+            <Border Grid.Row="0"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    CornerRadius="12,12,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                    Cursor="Hand">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- App Icon & Title -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource AccentBrush}"
+                                CornerRadius="8"
+                                Width="32"
+                                Height="32"
+                                Margin="0,0,12,0">
+                            <Image Source="./app.ico"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="TaskLens"
+                                      Foreground="{DynamicResource TextBrush}"
+                                      FontSize="16"
+                                      FontWeight="SemiBold"/>
+                            <TextBlock Text="System Monitor"
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      FontSize="11"/>
+                        </StackPanel>
                     </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
 
-        <!-- 📌 우측 콘텐츠 영역 -->
-        <ContentControl Grid.Column="1" Content="{Binding CurrentView}" />
-    </Grid>
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                        <Button x:Name="MinimizeButton"
+                                Click="MinimizeButton_Click"
+                                Style="{StaticResource TitleBarButtonStyle}"
+                                ToolTip="최소화">
+                            <Path Data="M4 12h16"
+                                  Stroke="{DynamicResource TextSecondaryBrush}"
+                                  StrokeThickness="2"
+                                  Stretch="Uniform"
+                                  Width="12" Height="12"/>
+                        </Button>
+
+                        <Button x:Name="MaximizeButton"
+                                Click="MaximizeButton_Click"
+                                Style="{StaticResource TitleBarButtonStyle}"
+                                ToolTip="최대화">
+                            <Path x:Name="MaximizeIconPath"
+                                  Data="M4 4v12h12V4H4zm0-2h12c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2z"
+                                  Fill="{DynamicResource TextSecondaryBrush}"
+                                  Stretch="Uniform"
+                                  Width="12" Height="12"/>
+                        </Button>
+
+                        <Button x:Name="CloseButton"
+                                Click="CloseButton_Click"
+                                Style="{StaticResource TitleBarButtonStyle}"
+                                ToolTip="닫기">
+                            <Path Data="M6.225 4.811a1 1 0 0 0-1.414 1.414L10.586 12 4.81 17.775a1 1 0 1 0 1.414 1.414L12 13.414l5.775 5.775a1 1 0 0 0 1.414-1.414L13.414 12l5.775-5.775a1 1 0 0 0-1.414-1.414L12 10.586 6.225 4.811z"
+                                  Fill="#FFDC2626"
+                                  Stretch="Uniform"
+                                  Width="12" Height="12"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 📱 Main Content Area -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <!-- 사이드 메뉴 -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- 메인 콘텐츠 -->
+                </Grid.ColumnDefinitions>
+
+                <!-- � Modern Sidebar Navigation -->
+                <Border Grid.Column="0"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 🎯 App Header (Hidden in sidebar since it's in title bar) -->
+                        <StackPanel Grid.Row="0" Margin="20,20,20,20">
+                            <TextBlock Text="메뉴"
+                                      Foreground="{DynamicResource TextBrush}"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <!-- 🧭 Navigation Menu -->
+                        <StackPanel Grid.Row="2" Margin="12,0,12,0">
+
+                            <RadioButton GroupName="MenuGroup"
+                                        IsChecked="{Binding IsHomeSelected, Mode=OneWay}"
+                                        Command="{Binding ShowHomeCommand}"
+                                        Style="{StaticResource ModernNavButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🏠" FontSize="18" Margin="0,0,12,0"/>
+                                    <TextBlock Text="{DynamicResource Home_Title}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton GroupName="MenuGroup"
+                                        IsChecked="{Binding IsAnalysisSelected, Mode=OneWay}"
+                                        Command="{Binding ShowAnalysisCommand}"
+                                        Style="{StaticResource ModernNavButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📊" FontSize="18" Margin="0,0,12,0"/>
+                                    <TextBlock Text="{DynamicResource Resource_Analysis_Title}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton GroupName="MenuGroup"
+                                        IsChecked="{Binding IsWarningLogSelected, Mode=OneWay}"
+                                        Command="{Binding ShowWarningLogCommand}"
+                                        Style="{StaticResource ModernNavButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚠️" FontSize="18" Margin="0,0,12,0"/>
+                                    <TextBlock Text="{DynamicResource WarningLog_Title}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton GroupName="MenuGroup"
+                                        IsChecked="{Binding IsSettingsSelected, Mode=OneWay}"
+                                        Command="{Binding ShowSettingsCommand}"
+                                        Style="{StaticResource ModernNavButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚙️" FontSize="18" Margin="0,0,12,0"/>
+                                    <TextBlock Text="{DynamicResource Settings_Title}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <!-- 📍 Version Info -->
+                        <Border Grid.Row="3"
+                                Background="{DynamicResource GlassBrush}"
+                                CornerRadius="12"
+                                Margin="20,20,20,20"
+                                Padding="16,12">
+                            <StackPanel>
+                                <TextBlock x:Name="VersionTextBlock"
+                                          Text="v1.0.0"
+                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                          FontSize="12"
+                                          FontWeight="Medium"/>
+                                <TextBlock Text="© 2024 TaskLens"
+                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                          FontSize="10"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- 📌 우측 콘텐츠 영역 -->
+                <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="0,0,0,12"/>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

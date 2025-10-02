@@ -44,7 +44,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid Margin="10" Background="{DynamicResource BackgroundBrush}">
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>  
